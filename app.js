@@ -101,25 +101,26 @@ function renderSchedule(){
               const hasNote = (it.note && String(it.note).trim().length>0);
               const hasMap = (it.mapUrl && String(it.mapUrl).trim().length>0);
               return `
-                <div class="tItem">
-                 <div class="tTop">
-  ${it.time ? `<span class="timeChip">${it.time}</span>` : ``}
-  <span class="placeText">${it.title || ""}</span>
+  <div class="tItem">
+    <div class="tTop">
+      ${it.time ? `<span class="timeChip">${it.time}</span>` : ``}
+      <span class="placeText">${it.title || ""}</span>
 
-  ${hasMap ? `
-    <a class="mapIconBtn" href="${it.mapUrl}" target="_blank" rel="noopener" aria-label="지도 열기">
-      <span>🗺️</span>
-    </a>
-  ` : ``}
-</div>
-${hasNote ? `
-  <div class="noteBox">
-    <div class="noteBody">${String(it.note)}</div>
+      ${hasMap ? `
+        <a class="mapIconBtn" href="${it.mapUrl}" target="_blank" rel="noopener" aria-label="지도 열기">
+          <span>🗺️</span>
+        </a>
+      ` : ``}
+    </div>
+
+    ${hasNote ? `
+      <div class="noteBox">
+        <div class="noteBody">${String(it.note)}</div>
+      </div>
+    ` : ``}
   </div>
-` : ``}
+`;
 
-                </div>
-              `;
             }).join("")}
           </div>
         `}
