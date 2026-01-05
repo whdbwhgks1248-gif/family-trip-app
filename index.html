@@ -13,11 +13,47 @@
 }
 body{ font-family: var(--font); }
 header{ font-family: var(--font); }
+    
     body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial; margin:0; background:#f6f7f9;}
-    header{background:#111; color:#fff; padding:14px 16px; font-size:20px; font-weight:700;}
+    
+    header {
+  background: #ffffff;
+  color: #111;
+  border-bottom: 1px solid #eee;
+}
+
+header h1 {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+body {
+  background: #f6f7f9;
+  color: #111;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 14px;
+  box-shadow: none;
+}
+
+    
     .tabs{display:flex; gap:10px; padding:12px; background:#fff; position:sticky; top:0; border-bottom:1px solid #e5e7eb;}
-    .tab{flex:1; padding:14px; font-size:18px; font-weight:700; border:1px solid #e5e7eb; border-radius:14px; background:#fff;}
-    .tab.active{border-color:#111;}
+.tab {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  color: #666;
+}
+
+.tab.active {
+  border-color: #111;
+  color: #111;
+  font-weight: 700;
+}
+
     .wrap{padding:12px; max-width:860px; margin:0 auto;}
     .card{background:#fff; border:1px solid #e5e7eb; border-radius:16px; padding:14px; margin:12px 0;}
     .row{display:flex; gap:10px; flex-wrap:wrap;}
@@ -49,25 +85,29 @@ header{ font-family: var(--font); }
   background:#111; box-shadow:0 0 0 4px #f6f7f9;
 }
 .tTop{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
-.timeChip{
-  display:inline-flex; align-items:center; gap:6px;
-  padding:6px 10px; border-radius:999px;
-  background:#f2f4f7; border:1px solid #e6e8ee;
-  font-size:14px; font-weight:800; color:#111;
+.timeChip {
+  background: #f1f3f5;
+  color: #444;
+  font-weight: 600;
+  font-size: 13px;
 }
-.placeText{
-  font-size:18px; font-weight:900; color:#111;
-  letter-spacing:-0.2px;
+
+.placeText {
+  font-size: 16px;
+  font-weight: 700;
+  color: #111;
 }
+
 .subText{ margin-top:6px; color:#4b5563; font-size:15px; line-height:1.35; }
-.noteBox{
-  margin-top:10px;
-  background:#fff6bf; /* sticky note */
-  border:1px solid #f2d86a;
-  border-radius:14px;
-  padding:12px 12px;
-  box-shadow: 0 8px 20px rgba(17,24,39,0.06);
+.noteBox {
+  background: #f8fafc;        /* 거의 흰색 */
+  border-left: 3px solid #d1d5db;
+  color: #444;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 14px;
 }
+
 .noteTitle{
   font-size:13px; font-weight:900; color:#7a5b00;
   display:flex; align-items:center; gap:8px;
@@ -82,19 +122,23 @@ header{ font-family: var(--font); }
 }
 .mapLink:hover{ opacity:0.8; }
 
-    .mapIconBtn{
-  margin-left:auto;
-  display:inline-flex; align-items:center; justify-content:center;
-  width:38px; height:38px;
-  border-radius:12px;
-  border:1px solid #e6e8ee;
-  background:#fff;
-  cursor:pointer;
-  text-decoration:none;
-  color:#111;
+.mapIconBtn {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  color: #666;
 }
+
+.mapIconBtn:hover {
+  background: #f3f4f6;
+}
+
 .mapIconBtn:hover{ background:#f6f7f9; }
 .mapIconBtn span{ font-size:18px; line-height:1; }
+
+#meCard {
+  background: #fafafa;
+  border: 1px dashed #e5e7eb;
+}
 
 
   </style>
