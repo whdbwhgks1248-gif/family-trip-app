@@ -52,7 +52,7 @@ const scheduleData = {
         {
           time: "16:30",
           title: "인천공항 도착",
-          note: "선발대: 영수, 한나, 아라\후발대: 연실, 유나, 건",
+          note: "선발대: 영수, 한나, 아라\n후발대: 연실, 유나, 건",
           mapUrl: ""
         },
         {
@@ -63,7 +63,7 @@ const scheduleData = {
         },
         {
           time: "21:15 - 22:30",
-          title: "공항 → 카몬 호텔 난바",
+          title: "→ 카몬 호텔 난바",
           note: "• <a href='https://blog.naver.com/bbh4313/224127071321' target='_blank'>ATM 기계 위치</a>\n• 라피트 막차 시간 알아보기",
           mapUrl: ""
         },
