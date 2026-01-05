@@ -82,7 +82,7 @@ const scheduleData = {
           title: "호텔 도착",
           mapUrl: "https://maps.google.com/?q=...",
           image: "./images/kamon-hotel-namba.png",
-          note: "..."
+          note: "01- 영수, 연실, 한나, 유나\n02- 아라, 현아, 건"
         }
 
       ]
