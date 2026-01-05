@@ -25,10 +25,20 @@ function setActiveTab(name){
   document.querySelectorAll(".tab").forEach(t=>{
     t.classList.toggle("active", t.dataset.tab===name);
   });
-  $("#viewSchedule").style.display = name==="schedule" ? "" : "none";
-  $("#viewPacking").style.display = name==="packing" ? "" : "none";
-  $("#viewSettle").style.display = name==="settle" ? "" : "none";
+
+  const viewSchedule = document.querySelector("#viewSchedule");
+  const viewPacking  = document.querySelector("#viewPacking");
+  const viewSettle   = document.querySelector("#viewSettle");
+
+  if (viewSchedule) viewSchedule.style.display = name==="schedule" ? "" : "none";
+  if (viewPacking)  viewPacking.style.display  = name==="packing" ? "" : "none";
+  if (viewSettle)   viewSettle.style.display   = name==="settle" ? "" : "none";
+
+  // ✅ 일정 탭에서는 숨김
+  const meCard = document.querySelector("#meCard");
+  if (meCard) meCard.style.display = (name === "schedule") ? "none" : "";
 }
+
 
 // --- init ---
 function initMe(){
