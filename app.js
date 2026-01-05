@@ -112,6 +112,11 @@ function renderSchedule(){
     </a>
   ` : ``}
 </div>
+${hasNote ? `
+  <div class="noteBox">
+    <div class="noteBody">${String(it.note)}</div>
+  </div>
+` : ``}
 
                 </div>
               `;
