@@ -10,6 +10,25 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
 
   <style>
+    /* 가로형 이미지 영역 */
+.media{
+  margin-top: 10px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  background: #f2f5ea;              /* 네 팔레트의 Ivory 계열 */
+  height: 140px;                    /* ✅ 여기서 크기 고정 (원하면 120~180 조절) */
+}
+
+/* 이미지 자체 */
+.mediaImg{
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;                /* ✅ 가로형으로 꽉 채우고 남는 건 크롭 */
+  object-position: center;           /* 중앙 기준 크롭 */
+}
+
     :root{
       /* palette */
       --ink:#2C363F;
