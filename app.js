@@ -90,22 +90,43 @@ function renderSchedule(){
       <div style="font-size:18px;font-weight:900;">전체 일정</div>
       <div class="hint">Day 1~5 탭 UI는 다음 단계에서 넣고, 지금은 리스트로 먼저 보여줍니다.</div>
     </div>
+
     ${scheduleData.days.map(day=>`
-      <div class="card">
-        <div style="font-size:18px;font-weight:900;">${day.label}</div>
-        ${day.items.length===0 ? `<div class="hint">아직 일정이 없습니다.</div>` :
-          day.items.map(it=>`
-            <div style="margin-top:10px;padding-top:10px;border-top:1px solid #eee;">
-              <div style="font-weight:900;">${it.time||""} ${it.title||""}</div>
-              <div>${it.note||""}</div>
-              ${it.mapUrl?`<div style="margin-top:8px;"><a href="${it.mapUrl}" target="_blank">지도 열기</a></div>`:""}
-            </div>
-          `).join("")
-        }
+      <div class="card dayCard">
+        <div style="font-size:20px;font-weight:950;letter-spacing:-0.2px;">${day.label}</div>
+
+        ${day.items.length===0 ? `<div class="hint" style="margin-top:10px;">아직 일정이 없습니다.</div>` : `
+          <div class="timeline">
+            ${day.items.map(it=>{
+              const hasNote = (it.note && String(it.note).trim().length>0);
+              const hasMap = (it.mapUrl && String(it.mapUrl).trim().length>0);
+              return `
+                <div class="tItem">
+                  <div class="tTop">
+                    ${it.time ? `<span class="timeChip">🕒 ${it.time}</span>` : ``}
+                    <span class="placeText">${it.title || ""}</span>
+                  </div>
+
+                  ${it.sub ? `<div class="subText">${it.sub}</div>` : ``}
+
+                  ${hasNote ? `
+                    <div class="noteBox">
+                      <div class="noteTitle">📝 메모</div>
+                      <div class="noteBody">${String(it.note)}</div>
+                    </div>
+                  ` : ``}
+
+                  ${hasMap ? `<a class="mapLink" href="${it.mapUrl}" target="_blank" rel="noopener">지도 열기</a>` : ``}
+                </div>
+              `;
+            }).join("")}
+          </div>
+        `}
       </div>
     `).join("")}
   `;
 }
+
 
 // --- PACKING ---
 function renderPacking(packing){
