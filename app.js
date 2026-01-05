@@ -111,7 +111,7 @@ function renderSchedule(){
 
                   ${hasNote ? `
                     <div class="noteBox">
-                      <div class="noteTitle">📝 메모</div>
+                      <div class="noteTitle">📝</div>
                       <div class="noteBody">${String(it.note)}</div>
                     </div>
                   ` : ``}
