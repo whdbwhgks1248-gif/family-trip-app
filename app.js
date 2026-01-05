@@ -80,7 +80,7 @@ const scheduleData = {
         {
           time: "22:30",
           title: "호텔 도착",
-          image: "./images/카몬호텔난바.png",
+          image: "./images/kamon-hotel-namba.png",
           note: "01 → 영수, 연실, 한나, 유나\n02 → 아라, 현아, 건"
         }
 
