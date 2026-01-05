@@ -50,7 +50,7 @@
       padding:12px;
       background:var(--bg);
       position:sticky;
-      top:52px; /* header 높이에 맞춰 sticky */
+      top:52px;
       z-index:15;
       border-bottom:1px solid rgba(44,54,63,.10);
     }
@@ -59,18 +59,18 @@
       appearance:none;
       border:1px solid rgba(44,54,63,.18);
       background:rgba(214,219,210,.35);
-      color:rgba(44,54,63,.75);
-      border-radius:16px;
+      color:rgba(44,54,63,.78);
+      border-radius:18px;
       padding:12px 14px;
       font-size:16px;
-      font-weight:700;
+      font-weight:750;
       cursor:pointer;
     }
     .tab.active{
       background:rgba(231,90,124,.12);
       border-color:rgba(231,90,124,.55);
       color:var(--ink);
-      font-weight:800;
+      font-weight:850;
     }
 
     /* ---------- Layout ---------- */
@@ -80,7 +80,7 @@
       margin:0 auto;
     }
     .card{
-      background:rgba(255,255,255,.65);
+      background:rgba(255,255,255,.70);
       border:1px solid rgba(44,54,63,.10);
       border-radius:18px;
       padding:16px;
@@ -104,13 +104,12 @@
     textarea{ width:100%; min-height:70px; }
     .hint{ color:rgba(44,54,63,.65); font-size:13px; margin-top:6px; }
 
-    /* "내 이름(선택)" 카드: 기본은 보이되 schedule에서는 JS로 숨김 */
     #meCard{
       background:rgba(214,219,210,.35);
       border:1px dashed rgba(44,54,63,.18);
     }
 
-    /* ---------- Schedule Timeline UI ---------- */
+    /* ---------- Schedule Timeline ---------- */
     .dayCard{ padding:16px; }
 
     .timeline{
@@ -129,13 +128,14 @@
       border-radius:999px;
     }
 
+    /* 카드 내부에서 정렬이 깨지지 않도록: noteBox는 absolute 제거 */
     .tItem{
-      position:relative;                 /* noteBox absolute 기준 */
+      position:relative;
       border-radius:18px;
       border:1px solid rgba(44,54,63,.10);
-      background:rgba(255,255,255,.70);
+      background:rgba(255,255,255,.75);
       margin:10px 0;
-      padding:14px 14px 62px;            /* 하단 메모 떠 있을 공간 */
+      padding:14px;
     }
     .tItem::before{
       content:"";
@@ -156,7 +156,6 @@
       flex-wrap:wrap;
     }
 
-    /* 시간: 핑크 포인트 + 연한 배지 */
     .timeChip{
       display:inline-flex;
       align-items:center;
@@ -165,19 +164,18 @@
       background:rgba(214,219,210,.55);
       border:1px solid rgba(44,54,63,.12);
       color:var(--accent);
-      font-weight:800;
+      font-weight:850;
       font-size:13px;
       line-height:1;
     }
 
     .placeText{
       font-size:16px;
-      font-weight:800;
+      font-weight:850;
       color:var(--ink);
       letter-spacing:-0.1px;
     }
 
-    /* 지도 아이콘 버튼: 오른쪽 끝으로 보내고 싶으면 margin-left:auto */
     .mapIconBtn{
       margin-left:auto;
       display:inline-flex;
@@ -201,33 +199,29 @@
       line-height:1;
     }
 
-    /* 메모: 우하단에 떠 있는 카드 */
+    /* ✅ 메모: 카드 아래쪽에 "정렬된 메모 카드"로 배치 */
     .noteBox{
-      position:absolute;
-      right:12px;
-      bottom:12px;
-      max-width:72%;
+      margin-top:10px;
+      width:100%;
       background:rgba(242,245,234,.92);
       border:1px solid rgba(44,54,63,.10);
       border-radius:16px;
-      padding:10px 12px;
+      padding:12px 14px;
       font-size:14px;
-      line-height:1.45;
-      box-shadow:0 10px 24px rgba(44,54,63,.18);
-      color:rgba(44,54,63,.90);
+      line-height:1.55;
+      box-shadow:0 10px 24px rgba(44,54,63,.12);
+      color:rgba(44,54,63,.92);
       white-space:pre-line;
     }
 
-    /* 노트 내 링크(추후 app.js에서 <a>로 렌더링되면) */
     .noteBox a{
       color:var(--accent);
-      font-weight:800;
+      font-weight:850;
       text-decoration:none;
       border-bottom:1px solid rgba(231,90,124,.55);
     }
     .noteBox a:hover{ opacity:.85; }
 
-    /* 기존 mapLink 텍스트형은 숨김/비권장 */
     .mapLink{ display:none; }
   </style>
 </head>
@@ -242,7 +236,6 @@
   </div>
 
   <div class="wrap">
-    <!-- schedule에서는 숨기고, packing/settle에서만 보이도록 JS로 제어 -->
     <div class="card" id="meCard">
       <label>내 이름(선택)</label>
       <select id="meSelect"></select>
@@ -256,9 +249,8 @@
 
   <script src="./app.js"></script>
 
-  <!-- 탭 전환 시 #meCard 노출 제어 (app.js setActiveTab이 있다면 거기에 넣는 게 정석) -->
+  <!-- schedule 탭에서만 내 이름 카드 숨김 -->
   <script>
-    // app.js에서 setActiveTab을 이미 쓰고 있더라도 안전하게 동작하도록 "보조" 처리
     (function(){
       function updateMeCardVisibility(){
         const active = document.querySelector(".tab.active");
@@ -267,13 +259,9 @@
         if(!meCard) return;
         meCard.style.display = (name==="packing" || name==="settle") ? "" : "none";
       }
-
-      // 탭 클릭 시 반영
       document.querySelectorAll(".tab").forEach(btn=>{
         btn.addEventListener("click", updateMeCardVisibility);
       });
-
-      // 첫 로딩 시 schedule이면 숨김
       window.addEventListener("DOMContentLoaded", updateMeCardVisibility);
     })();
   </script>
