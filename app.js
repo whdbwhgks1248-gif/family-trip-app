@@ -102,20 +102,17 @@ function renderSchedule(){
               const hasMap = (it.mapUrl && String(it.mapUrl).trim().length>0);
               return `
                 <div class="tItem">
-                  <div class="tTop">
-                    ${it.time ? `<span class="timeChip">🕒 ${it.time}</span>` : ``}
-                    <span class="placeText">${it.title || ""}</span>
-                  </div>
+                 <div class="tTop">
+  ${it.time ? `<span class="timeChip">${it.time}</span>` : ``}
+  <span class="placeText">${it.title || ""}</span>
 
-                  ${it.sub ? `<div class="subText">${it.sub}</div>` : ``}
+  ${hasMap ? `
+    <a class="mapIconBtn" href="${it.mapUrl}" target="_blank" rel="noopener" aria-label="지도 열기">
+      <span>🗺️</span>
+    </a>
+  ` : ``}
+</div>
 
-                  ${hasNote ? `
-                    <div class="noteBox">
-                      <div class="noteBody">${String(it.note)}</div>
-                    </div>
-                  ` : ``}
-
-                  ${hasMap ? `<a class="mapLink" href="${it.mapUrl}" target="_blank" rel="noopener">지도 열기</a>` : ``}
                 </div>
               `;
             }).join("")}
