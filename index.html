@@ -1,168 +1,281 @@
 <!doctype html>
 <html lang="ko">
 <head>
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
-  
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>가족여행 플래너</title>
+  <title>오사카&교토 여행</title>
+
+  <!-- Pretendard -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+
   <style>
-   :root{
-  --font: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
-}
-body{ font-family: var(--font); }
-header{ font-family: var(--font); }
-    
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial; margin:0; background:#f6f7f9;}
-    
-    header {
-  background: #ffffff;
-  color: #111;
-  border-bottom: 1px solid #eee;
-}
+    :root{
+      /* palette */
+      --ink:#2C363F;
+      --accent:#E75A7C;
+      --bg:#F2F5EA;
+      --card:#D6DBD2;
+      --line:#BBC7A4;
 
-header h1 {
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-}
+      --font: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+    }
 
-body {
-  background: #f6f7f9;
-  color: #111;
-}
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family:var(--font);
+      background:var(--bg);
+      color:var(--ink);
+    }
 
-.card {
-  background: #fff;
-  border: 1px solid #eaeaea;
-  border-radius: 14px;
-  box-shadow: none;
-}
+    /* ---------- Header ---------- */
+    header{
+      position:sticky;
+      top:0;
+      z-index:20;
+      background:var(--ink);
+      color:var(--bg);
+      text-align:center;
+      font-weight:800;
+      letter-spacing:-0.2px;
+      padding:14px 16px;
+      border-bottom:3px solid var(--accent);
+    }
 
-    
-    .tabs{display:flex; gap:10px; padding:12px; background:#fff; position:sticky; top:0; border-bottom:1px solid #e5e7eb;}
-.tab {
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  color: #666;
-}
+    /* ---------- Tabs ---------- */
+    .tabs{
+      display:flex;
+      gap:10px;
+      padding:12px;
+      background:var(--bg);
+      position:sticky;
+      top:52px; /* header 높이에 맞춰 sticky */
+      z-index:15;
+      border-bottom:1px solid rgba(44,54,63,.10);
+    }
+    .tab{
+      flex:1;
+      appearance:none;
+      border:1px solid rgba(44,54,63,.18);
+      background:rgba(214,219,210,.35);
+      color:rgba(44,54,63,.75);
+      border-radius:16px;
+      padding:12px 14px;
+      font-size:16px;
+      font-weight:700;
+      cursor:pointer;
+    }
+    .tab.active{
+      background:rgba(231,90,124,.12);
+      border-color:rgba(231,90,124,.55);
+      color:var(--ink);
+      font-weight:800;
+    }
 
-.tab.active {
-  border-color: #111;
-  color: #111;
-  font-weight: 700;
-}
+    /* ---------- Layout ---------- */
+    .wrap{
+      padding:12px;
+      max-width:860px;
+      margin:0 auto;
+    }
+    .card{
+      background:rgba(255,255,255,.65);
+      border:1px solid rgba(44,54,63,.10);
+      border-radius:18px;
+      padding:16px;
+      margin:12px 0;
+    }
+    label{
+      display:block;
+      font-weight:800;
+      margin:6px 0 8px;
+      font-size:15px;
+    }
+    input, select, textarea, button{
+      font-family:var(--font);
+      font-size:16px;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid rgba(44,54,63,.18);
+      background:rgba(242,245,234,.55);
+      color:var(--ink);
+    }
+    textarea{ width:100%; min-height:70px; }
+    .hint{ color:rgba(44,54,63,.65); font-size:13px; margin-top:6px; }
 
-    .wrap{padding:12px; max-width:860px; margin:0 auto;}
-    .card{background:#fff; border:1px solid #e5e7eb; border-radius:16px; padding:14px; margin:12px 0;}
-    .row{display:flex; gap:10px; flex-wrap:wrap;}
-    label{display:block; font-weight:700; margin:10px 0 6px; font-size:16px;}
-    input, select, textarea, button{font-size:18px; padding:12px; border-radius:14px; border:1px solid #d1d5db;}
-    textarea{width:100%; min-height:70px;}
-    .btn{background:#111; color:#fff; border:none; font-weight:800;}
-    .btnOutline{background:#fff; border:2px solid #111; font-weight:800;}
-    .big{width:100%;}
-    table{width:100%; border-collapse:collapse; font-size:16px;}
-    th,td{border-bottom:1px solid #eee; padding:10px; text-align:left;}
-    .hint{color:#6b7280; font-size:14px; margin-top:6px;}
-    .pill{display:inline-flex; gap:8px; flex-wrap:wrap;}
-    .pill button{padding:10px 12px; border-radius:999px; font-weight:800; background:#fff;}
-    .pill button.on{background:#111; color:#fff; border-color:#111;}
-    /* ---- Schedule Timeline UI ---- */
-.dayCard { padding: 16px; }
-.timeline { position: relative; padding-left: 18px; margin-top: 12px; }
-.timeline::before{
-  content:"";
-  position:absolute; left:6px; top:6px; bottom:6px;
-  width:2px; background:#eceff3; border-radius:999px;
-}
-.tItem{ position:relative; padding: 10px 12px 10px 14px; border-radius:14px; border:1px solid #eef0f3; background:#fff; margin:10px 0; }
-.tItem::before{
-  content:"";
-  position:absolute; left:-18px; top:18px;
-  width:10px; height:10px; border-radius:50%;
-  background:#111; box-shadow:0 0 0 4px #f6f7f9;
-}
-.tTop{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
-.timeChip {
-  background: #f1f3f5;
-  color: #444;
-  font-weight: 600;
-  font-size: 13px;
-}
+    /* "내 이름(선택)" 카드: 기본은 보이되 schedule에서는 JS로 숨김 */
+    #meCard{
+      background:rgba(214,219,210,.35);
+      border:1px dashed rgba(44,54,63,.18);
+    }
 
-.placeText {
-  font-size: 16px;
-  font-weight: 700;
-  color: #111;
-}
+    /* ---------- Schedule Timeline UI ---------- */
+    .dayCard{ padding:16px; }
 
-.subText{ margin-top:6px; color:#4b5563; font-size:15px; line-height:1.35; }
-.noteBox {
-  background: #f8fafc;        /* 거의 흰색 */
-  border-left: 3px solid #d1d5db;
-  color: #444;
-  padding: 12px 14px;
-  border-radius: 8px;
-  font-size: 14px;
-}
+    .timeline{
+      position:relative;
+      padding-left:18px;
+      margin-top:12px;
+    }
+    .timeline::before{
+      content:"";
+      position:absolute;
+      left:6px;
+      top:6px;
+      bottom:6px;
+      width:2px;
+      background:rgba(44,54,63,.10);
+      border-radius:999px;
+    }
 
-.noteTitle{
-  font-size:13px; font-weight:900; color:#7a5b00;
-  display:flex; align-items:center; gap:8px;
-  margin-bottom:6px;
-}
-.noteBody{ font-size:15px; color:#3b2f00; white-space:pre-line; line-height:1.35; }
-.mapLink{
-  display:inline-flex; margin-top:10px;
-  font-weight:900; text-decoration:none;
-  color:#111; border-bottom:2px solid #111;
-  padding-bottom:2px;
-}
-.mapLink:hover{ opacity:0.8; }
+    .tItem{
+      position:relative;                 /* noteBox absolute 기준 */
+      border-radius:18px;
+      border:1px solid rgba(44,54,63,.10);
+      background:rgba(255,255,255,.70);
+      margin:10px 0;
+      padding:14px 14px 62px;            /* 하단 메모 떠 있을 공간 */
+    }
+    .tItem::before{
+      content:"";
+      position:absolute;
+      left:-18px;
+      top:18px;
+      width:10px;
+      height:10px;
+      border-radius:50%;
+      background:var(--ink);
+      box-shadow:0 0 0 4px var(--bg);
+    }
 
-.mapIconBtn {
-  border: 1px solid #e5e7eb;
-  background: #fff;
-  color: #666;
-}
+    .tTop{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
 
-.mapIconBtn:hover {
-  background: #f3f4f6;
-}
+    /* 시간: 핑크 포인트 + 연한 배지 */
+    .timeChip{
+      display:inline-flex;
+      align-items:center;
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(214,219,210,.55);
+      border:1px solid rgba(44,54,63,.12);
+      color:var(--accent);
+      font-weight:800;
+      font-size:13px;
+      line-height:1;
+    }
 
-.mapIconBtn:hover{ background:#f6f7f9; }
-.mapIconBtn span{ font-size:18px; line-height:1; }
+    .placeText{
+      font-size:16px;
+      font-weight:800;
+      color:var(--ink);
+      letter-spacing:-0.1px;
+    }
 
-#meCard {
-  background: #fafafa;
-  border: 1px dashed #e5e7eb;
-}
+    /* 지도 아이콘 버튼: 오른쪽 끝으로 보내고 싶으면 margin-left:auto */
+    .mapIconBtn{
+      margin-left:auto;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:38px;
+      height:38px;
+      border-radius:12px;
+      border:1px solid rgba(44,54,63,.14);
+      background:rgba(242,245,234,.70);
+      color:var(--ink);
+      text-decoration:none;
+      cursor:pointer;
+    }
+    .mapIconBtn:hover{
+      background:rgba(231,90,124,.10);
+      border-color:rgba(231,90,124,.45);
+    }
+    .mapIconBtn span{
+      font-size:18px;
+      line-height:1;
+    }
 
+    /* 메모: 우하단에 떠 있는 카드 */
+    .noteBox{
+      position:absolute;
+      right:12px;
+      bottom:12px;
+      max-width:72%;
+      background:rgba(242,245,234,.92);
+      border:1px solid rgba(44,54,63,.10);
+      border-radius:16px;
+      padding:10px 12px;
+      font-size:14px;
+      line-height:1.45;
+      box-shadow:0 10px 24px rgba(44,54,63,.18);
+      color:rgba(44,54,63,.90);
+      white-space:pre-line;
+    }
 
+    /* 노트 내 링크(추후 app.js에서 <a>로 렌더링되면) */
+    .noteBox a{
+      color:var(--accent);
+      font-weight:800;
+      text-decoration:none;
+      border-bottom:1px solid rgba(231,90,124,.55);
+    }
+    .noteBox a:hover{ opacity:.85; }
+
+    /* 기존 mapLink 텍스트형은 숨김/비권장 */
+    .mapLink{ display:none; }
   </style>
 </head>
+
 <body>
-  <header>가족여행 플래너 (Day 5)</header>
+  <header>오사카&교토 여행</header>
 
   <div class="tabs">
-    <button class="tab active" data-tab="schedule">일정</button>
-    <button class="tab" data-tab="packing">준비물</button>
-    <button class="tab" data-tab="settle">정산</button>
+    <button class="tab active" data-tab="schedule" type="button">일정</button>
+    <button class="tab" data-tab="packing" type="button">준비물</button>
+    <button class="tab" data-tab="settle" type="button">정산</button>
   </div>
 
   <div class="wrap">
-<div class="card" id="meCard">
-  <label>내 이름(선택)</label>
-  <select id="meSelect"></select>
-  <div class="hint">정산/개인 준비물 입력에 사용됩니다.</div>
-</div>
+    <!-- schedule에서는 숨기고, packing/settle에서만 보이도록 JS로 제어 -->
+    <div class="card" id="meCard">
+      <label>내 이름(선택)</label>
+      <select id="meSelect"></select>
+      <div class="hint">정산/개인 준비물 입력에 사용됩니다.</div>
+    </div>
+
     <div id="viewSchedule"></div>
     <div id="viewPacking" style="display:none;"></div>
     <div id="viewSettle" style="display:none;"></div>
   </div>
 
   <script src="./app.js"></script>
+
+  <!-- 탭 전환 시 #meCard 노출 제어 (app.js setActiveTab이 있다면 거기에 넣는 게 정석) -->
+  <script>
+    // app.js에서 setActiveTab을 이미 쓰고 있더라도 안전하게 동작하도록 "보조" 처리
+    (function(){
+      function updateMeCardVisibility(){
+        const active = document.querySelector(".tab.active");
+        const name = active ? active.dataset.tab : "schedule";
+        const meCard = document.getElementById("meCard");
+        if(!meCard) return;
+        meCard.style.display = (name==="packing" || name==="settle") ? "" : "none";
+      }
+
+      // 탭 클릭 시 반영
+      document.querySelectorAll(".tab").forEach(btn=>{
+        btn.addEventListener("click", updateMeCardVisibility);
+      });
+
+      // 첫 로딩 시 schedule이면 숨김
+      window.addEventListener("DOMContentLoaded", updateMeCardVisibility);
+    })();
+  </script>
 </body>
 </html>
