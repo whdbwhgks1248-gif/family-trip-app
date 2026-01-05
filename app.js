@@ -80,8 +80,9 @@ const scheduleData = {
         {
           time: "22:30",
           title: "호텔 도착",
+          mapUrl: "https://maps.google.com/?q=...",
           image: "./images/kamon-hotel-namba.png",
-          note: "01 → 영수, 연실, 한나, 유나\n02 → 아라, 현아, 건"
+          note: "..."
         }
 
       ]
@@ -113,30 +114,37 @@ function renderSchedule(){
             const hasMap  = (it.mapUrl && String(it.mapUrl).trim().length>0);
             const hasImg  = (it.image && String(it.image).trim().length>0);
               return `
-  <div class="tItem">
-    <div class="tTop">
-      ${it.time ? `<span class="timeChip">${it.time}</span>` : ``}
-      <span class="placeText">${it.title || ""}</span>
+<div class="tItem">
+ <div class="tTop">
+  ${item.time ? `<span class="timeChip">${item.time}</span>` : ""}
+  <span class="placeText">${item.title ?? ""}</span>
 
-      ${hasMap ? `
-        <a class="mapIconBtn" href="${it.mapUrl}" target="_blank" rel="noopener" aria-label="지도 열기">
-          <span>🗺️</span>
-        </a>
-      ` : ``}
+  ${item.mapUrl ? `
+    <a class="mapIconBtn" href="${item.mapUrl}" target="_blank" rel="noopener" aria-label="지도 열기">
+      <span>🗺️</span>
+    </a>
+  ` : ""}
+</div>
+
+  <!-- ✅ 여기! 이미지 들어가는 위치 -->
+  ${item.image ? `
+    <div class="media">
+      <img
+        class="mediaImg"
+        src="${item.image}"
+        alt="${item.title || ''}"
+        loading="lazy"
+      >
     </div>
-${hasImg ? `
-  <div class="imageWrap">
-    <img src="${it.image}" alt="${it.title || 'image'}">
-  </div>
-` : ``}
+  ` : ""}
 
-    ${hasNote ? `
-      <div class="noteBox">
-        <div class="noteBody">${String(it.note)}</div>
-      </div>
-    ` : ``}
-  </div>
-`;
+  ${item.note ? `
+    <div class="noteBox">
+      ${item.note.replace(/\n/g, "<br>")}
+    </div>
+  ` : ""}
+</div>
+
 
             }).join("")}
           </div>
