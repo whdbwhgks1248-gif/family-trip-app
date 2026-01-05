@@ -45,8 +45,43 @@ document.querySelectorAll(".tab").forEach(btn=>{
 // --- SCHEDULE (placeholder: 너 일정 넣을 자리) ---
 const scheduleData = {
   title: "Day5 일정",
-  days: DAYS.map(d=>({label:`Day ${d}`, items: []}))
+  days: [
+    {
+      label: "Day 1",
+      items: [
+        {
+          time: "16:30",
+          title: "인천공항 도착",
+          note: "01: 영수, 한나, 아라\n02: 연실, 유나, 건",
+          mapUrl: ""
+        },
+        {
+          time: "19:25 - 21:15",
+          title: "인천 → 오사카 공항",
+          note: "",
+          mapUrl: ""
+        },
+        {
+          time: "21:15 - 22:30",
+          title: "공항 → 카몬 호텔 난바",
+          note: "• ATM 기계 위치 파악\n• 라피트 막차 시간 알아보기",
+          mapUrl: ""
+        },
+        {
+          time: "22:30",
+          title: "카몬 호텔 난바 도착",
+          note: "01 → 유나, 아라, 현아\n02 → 영수, 연실, 한나, 건",
+          mapUrl: "https://maps.app.goo.gl/is8FwPKpMLncuXyi6"
+        }
+      ]
+    },
+    { label: "Day 2", items: [] },
+    { label: "Day 3", items: [] },
+    { label: "Day 4", items: [] },
+    { label: "Day 5", items: [] }
+  ]
 };
+
 // TODO: 네 일정 넣고 싶으면 items에 push하면 됨
 function renderSchedule(){
   const root = $("#viewSchedule");
