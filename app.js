@@ -79,7 +79,7 @@ const scheduleData = {
         },
         {
           time: "22:30",
-          title: "카몬 호텔 도착",
+          title: "호텔 도착",
           image: "./images/카몬호텔난바.png",
           note: "01 → 영수, 연실, 한나, 유나\n02 → 아라, 현아, 건"
         }
@@ -109,8 +109,9 @@ function renderSchedule(){
         ${day.items.length===0 ? `<div class="hint" style="margin-top:10px;">아직 일정이 없습니다.</div>` : `
           <div class="timeline">
             ${day.items.map(it=>{
-              const hasNote = (it.note && String(it.note).trim().length>0);
-              const hasMap = (it.mapUrl && String(it.mapUrl).trim().length>0);
+             const hasNote = (it.note && String(it.note).trim().length>0);
+            const hasMap  = (it.mapUrl && String(it.mapUrl).trim().length>0);
+            const hasImg  = (it.image && String(it.image).trim().length>0);
               return `
   <div class="tItem">
     <div class="tTop">
@@ -123,6 +124,11 @@ function renderSchedule(){
         </a>
       ` : ``}
     </div>
+${hasImg ? `
+  <div class="imageWrap">
+    <img src="${it.image}" alt="${it.title || 'image'}">
+  </div>
+` : ``}
 
     ${hasNote ? `
       <div class="noteBox">
