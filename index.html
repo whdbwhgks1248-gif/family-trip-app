@@ -1,17 +1,18 @@
 <!doctype html>
 <html lang="ko">
 <head>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
   
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>가족여행 플래너</title>
   <style>
-    :root{
+   :root{
   --font: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
 }
 body{ font-family: var(--font); }
+header{ font-family: var(--font); }
     body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial; margin:0; background:#f6f7f9;}
     header{background:#111; color:#fff; padding:14px 16px; font-size:20px; font-weight:700;}
     .tabs{display:flex; gap:10px; padding:12px; background:#fff; position:sticky; top:0; border-bottom:1px solid #e5e7eb;}
@@ -108,11 +109,6 @@ body{ font-family: var(--font); }
   </div>
 
   <div class="wrap">
-    <div class="card">
-      <label>내 이름(선택)</label>
-      <select id="meSelect"></select>
-      <div class="hint">정산/개인 준비물 입력에 사용됩니다.</div>
-    </div>
 
     <div id="viewSchedule"></div>
     <div id="viewPacking" style="display:none;"></div>
