@@ -211,6 +211,7 @@ const scheduleData = {
 
     { time: "08:20 - 09:00",
      title: "🚎 > 청수사",
+     mapUrl: "https://maps.app.goo.gl/hLp5gqqzgsGzZ5NV6",
      note: "• 예상 버스비 : ¥230"
     },
 
@@ -226,11 +227,14 @@ const scheduleData = {
 
     { time: "12:30 - 13:30",
       title: "점심 京料理 花かがみ",
+      mapUrl: "https://maps.app.goo.gl/vJm4CRXN7cjiCfPu9",
       note: "• 예약확정: 12:30\n• 여행 2일 전 다시 이메일 드리기\n• <a href='https://www.hanakagami.co.jp/contact/'_blank' rel='noopener noreferrer'>京料理 花かがみ</a>"
     },
 
     { time: "13:30 - 14:00",
-     title: "→ 오카페 교토" },
+     title: "→ 오카페 교토",
+     mapUrl: "https://maps.app.goo.gl/ZZRCgS4z8PbPRuC2A"    
+    },
     
     { time: "14:00 - 15:00",
       title: "오카페 교토" },
@@ -238,6 +242,7 @@ const scheduleData = {
     {
       time: "15:00 - 17:00",
       title: "문구점 투어",
+      mapUrl: "https://maps.app.goo.gl/FeJypkoKBEw5My9j8",
       note:
         "① 웰더(베이커리)\n" +
         "② 휴먼 메이드 1928\n" +
@@ -251,12 +256,14 @@ const scheduleData = {
     },
 
     { time: "17:00 - 17:30",
-     title: "🚕 → Kaneko" },
+     title: "🚕 → Kaneko",
+     mapUrl: "https://maps.app.goo.gl/pFwxx3v1cmQZxEAG9"
+    },
 
     {
       time: "17:30 - 19:00",
       title: "Kaneko",
-      note: "• <a href='https://www.instagram.com/kaneko_kyoto?igsh=Nmg1Y2Q0NWljZGI3&utm_source=qr'_blank' rel='noopener noreferrer'>인스타그램</a>"
+      note: "• <a href='https://www.instagram.com/kaneko_kyoto?igsh=Nmg1Y2Q0NWljZGI3&utm_source=qr'_blank' rel='noopener noreferrer'>인스타그램</a>",
       images: [
         // ✅ 여기 2개 이미지만 “안 잘리게” 옵션 추가
         { src: "images/kaneko-confirm-1.png", alt: "Kaneko 예약확정서 1", fit: "contain" },
@@ -270,6 +277,7 @@ const scheduleData = {
     {
       time: "20:00 -",
       title: "센토 Hinode-yu",
+      mapUrl: "https://maps.app.goo.gl/BfUAtyudWqumkp4dA",
       note: "• <a href='https://blog.naver.com/ohihelloj/223247044183'_blank' rel='noopener noreferrer'>센토 후기</a>
     }
   ]
