@@ -274,9 +274,12 @@ function renderSchedule() {
 }
 
 // 전역 상태(없으면 추가)
-const settleFormState = {
+settleFormState = {
   category: "",
   currency: "KRW",
+  amount: "",
+  paid_by: "",
+  participants: []
 };
 
 async function renderSettle() {
@@ -751,9 +754,12 @@ showTab("schedule");
 // ===== settle form logic (붙여넣기 시작) =====
 
 // 정산 입력 폼 상태
-const settleFormState = {
+let settleFormState = {
   category: "",
-  currency: "",
+  currency: "KRW",
+  amount: "",
+  paid_by: "",
+  participants: [] // 필요 없으면 지워도 됨
 };
 
 function bindSettleForm_() 
