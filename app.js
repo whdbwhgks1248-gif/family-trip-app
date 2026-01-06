@@ -41,7 +41,16 @@ function setActiveTab(name){
 
   if (name === "schedule") renderSchedule();
   if (name === "packing")  renderPacking();
-  if (name === "settle")   renderSettle();
+ if (name === "settle") {
+  const el = document.querySelector("#viewSettle");
+  if (el) {
+    el.innerHTML = `<div class="card"><b>정산 탭 클릭됨 ✅</b></div>`;
+  } else {
+    alert("#viewSettle 못 찾음");
+  }
+  console.log("[DEBUG] settle tab clicked", el);
+}
+
 }
 
 
