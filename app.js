@@ -613,7 +613,7 @@ const fx = (summary && summary.fx) ? summary.fx : 0;
       <table>
         <thead><tr><th>이름</th><th>낸 돈</th><th>써야 하는 돈</th><th>정산</th></tr></thead>
         <tbody>
-          ${(summary.balance||[]).map(b=>`
+          ${(summary?.balance||[]).map(b=>`
             <tr>
               <td style="font-weight:900;">${b.person}</td>
               <td>${fmtKRW(b.paidKrw)}</td>
@@ -711,8 +711,14 @@ const fx = (summary && summary.fx) ? summary.fx : 0;
 }
 
 async function loadSummary(){
-  const data = await apiGet("summary");
-  if (!data.ok) { alert(data.error); return; }
+// ✅ summary를 항상 "객체"로 보장
+const summaryRes = await apiGet("summary"); // 또는 "settle"을 쓰고 있다면 그걸 유지
+const summary = (summaryRes && summaryRes.ok) ? summaryRes : { ok:false, balance:[], transfers:[], fx:{} };
+
+// (옵션) 실패 원인도 화면에 보여주고 싶으면:
+if (!summary.ok) {
+  console.warn("[renderSettle] summary not ok:", summaryRes);
+}  if (!data.ok) { alert(data.error); return; }
   renderSettle(data);
 }
 
@@ -883,3 +889,4 @@ async function submitExpense_() {
     setMsg(String(e.message || e));
   }
 }
+
