@@ -239,14 +239,14 @@ const scheduleData = {
       time: "15:00 - 17:00",
       title: "문구점 투어",
       note:
-        "① 웰더(베이커리)\n",
-        "② 휴먼 메이드 1928\n",
-        "③ Stationery Shop tag\n",
-        "④ 규쿄도 문구\n",
-        "⑤ 그란디루 오이케점 (베이커리)\n",
-        "⑥ Para lucirse\n",
-        "⑦ 表現社 cozyca products shop HIRAETH\n",
-        "⑧ forme.(フォルム)\n",
+        "① 웰더(베이커리)\n" +
+        "② 휴먼 메이드 1928\n" +
+        "③ Stationery Shop tag\n" +
+        "④ 규쿄도 문구\n" +
+        "⑤ 그란디루 오이케점 (베이커리)\n" +
+        "⑥ Para lucirse\n" +
+        "⑦ 表現社 cozyca products shop HIRAETH\n" +
+        "⑧ forme.(フォルム)\n" +
         "⑨ 伊藤文祥堂(이토문방구)\n"
     },
 
