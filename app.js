@@ -615,9 +615,6 @@ async function loadSummary(){
   await loadSummary();
 })();
 
-// (없으면 추가) 간단 셀렉터 헬퍼
-const $ = (sel) => document.querySelector(sel);
-
 // 탭 전환 + 렌더
 function showTab(tab) {
   // 화면 토글
