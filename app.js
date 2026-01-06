@@ -329,3 +329,5 @@ function renderSouvenir() {
   `;
 }
 
+setActiveTab("schedule");
+renderSchedule?.();
