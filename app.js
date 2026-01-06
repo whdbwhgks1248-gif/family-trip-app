@@ -28,17 +28,19 @@ function setActiveTab(name){
   });
 
   const viewSchedule = document.querySelector("#viewSchedule");
-  const viewPacking  = document.querySelector("#viewPacking");
-  const viewSettle   = document.querySelector("#viewSettle");
+  const viewRules    = document.querySelector("#viewRules");
+  const viewSouvenir = document.querySelector("#viewSouvenir");
 
   if (viewSchedule) viewSchedule.style.display = name==="schedule" ? "" : "none";
-  if (viewPacking)  viewPacking.style.display  = name==="packing" ? "" : "none";
-  if (viewSettle)   viewSettle.style.display   = name==="settle" ? "" : "none";
-  
-  if (name === "schedule") renderSchedule();
-  if (name === "packing")  renderPacking();
-  if (name === "settle")   renderSettle();
+  if (viewRules)    viewRules.style.display    = name==="rules" ? "" : "none";
+  if (viewSouvenir) viewSouvenir.style.display = name==="souvenir" ? "" : "none";
+
+  // 탭 들어갈 때 각 화면 렌더
+  if (name === "schedule") renderSchedule?.();
+  if (name === "rules")    renderRules?.();
+  if (name === "souvenir") renderSouvenir?.();
 }
+
   
   // ✅ 일정 탭에서는 숨김
   const meCard = document.querySelector("#meCard");
@@ -272,621 +274,58 @@ function renderSchedule() {
     }).join("")}
   `;
 }
-
-// 전역 상태(없으면 추가)
-settleFormState = {
-  category: "",
-  currency: "KRW",
-  amount: "",
-  paid_by: "",
-  participants: []
-};
-
-async function renderSettle() {
-  const root = $("#viewSettle");
+ 
+function renderRules() {
+  const root = document.querySelector("#viewRules");
   if (!root) return;
 
-  console.log("[renderSettle] called");
-
-  // ✅ 화면을 '추가'가 아니라 '교체'로만 렌더 (중복 방지)
   root.innerHTML = `
     <div class="card">
-      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
-        <div style="font-size:18px; font-weight:900;">정산</div>
-        <button id="btnRefreshSettle" class="btnOutline" style="padding:10px 12px;">새로고침</button>
-      </div>
-      <div class="hint">settled=TRUE 인 항목은 정산에서 제외됩니다.</div>
-      <div id="settleStatus" class="hint" style="margin-top:10px;">불러오는 중...</div>
+      <div style="font-size:18px; font-weight:900;">여행 규칙</div>
+      <div class="hint" style="margin-top:8px;">여기에 우리 여행 규칙을 적어두면 돼요.</div>
     </div>
 
     <div class="card">
-      <div style="font-size:18px; font-weight:900; margin-bottom:10px;">지출 추가</div>
-
-      <div class="hint" style="margin-bottom:6px;">카테고리</div>
-      <div id="settleCategoryRow" style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
-        ${CATEGORIES.map(c => `
-          <button type="button" class="chipBtn" data-category="${escapeHtml_(c)}">${escapeHtml_(c)}</button>
-        `).join("")}
-      </div>
-
-      <div class="hint" style="margin-bottom:6px;">금액</div>
-      <input id="settleAmount" inputmode="numeric" placeholder="예: 26,705" class="input" style="width:100%; margin-bottom:12px;" />
-
-      <div class="hint" style="margin-bottom:6px;">통화</div>
-      <div id="settleCurrencyRow" style="display:flex; gap:8px; margin-bottom:12px;">
-        ${["KRW","JPY"].map(cur => `
-          <button type="button" class="chipBtn ${cur==="KRW" ? "active":""}" data-currency="${cur}">${cur}</button>
-        `).join("")}
-      </div>
-
-      <div class="hint" style="margin-bottom:6px;">결제자</div>
-      <select id="settlePaidBy" class="select" style="width:100%; margin-bottom:12px;">
-        ${PEOPLE.map(p => `<option value="${escapeHtml_(p)}">${escapeHtml_(p)}</option>`).join("")}
-      </select>
-
-      <div class="hint" style="margin-bottom:6px;">참여자(선택)</div>
-      <div class="hint" style="margin-bottom:6px;">※ 아무도 선택 안 하면 자동으로 “전원 N빵”</div>
-      <div id="settleParticipants" style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
-        ${PEOPLE.map(p => `
-          <label style="display:flex; align-items:center; gap:6px;">
-            <input type="checkbox" class="settlePart" value="${escapeHtml_(p)}" />
-            <span>${escapeHtml_(p)}</span>
-          </label>
-        `).join("")}
-      </div>
-
-      <div class="hint" style="margin-bottom:6px;">메모(선택)</div>
-      <input id="settleTitle" placeholder="예: 공항 → 호텔 택시" class="input" style="width:100%; margin-bottom:12px;" />
-
-      <button id="btnAddExpense" class="btnPrimary" style="width:100%;">등록</button>
-      <div id="settleFormMsg" class="hint" style="margin-top:8px;"></div>
-    </div>
-
-    <div class="card">
-      <div style="font-size:18px; font-weight:900; margin-bottom:10px;">누가 누구에게 얼마</div>
-      <div id="settleTransfers"></div>
-    </div>
-
-    <div class="card">
-      <div style="font-size:18px; font-weight:900; margin-bottom:10px;">상세 내역</div>
-      <div id="settleDetails"></div>
+      <ul style="margin:0; padding-left:18px; line-height:1.8;">
+        <li>아침 집합 시간 지키기</li>
+        <li>지각/이탈 시 공유하기</li>
+        <li>사진 공유는 단톡/앨범에 모으기</li>
+        <li>예산/지출은 당일 간단 기록</li>
+      </ul>
     </div>
   `;
-
-  // ✅ 버튼 이벤트
-  $("#btnRefreshSettle").onclick = () => renderSettle();
-
-  // ✅ 폼 이벤트 바인딩(중요)
-  if (typeof bindSettleForm_ === "function") bindSettleForm_();
-
-  // ✅ 데이터 로딩
-  const elStatus = $("#settleStatus");
-  const elTransfers = $("#settleTransfers");
-  const elDetails = $("#settleDetails");
-
-  try {
-    if (!SETTLE_API_URL) throw new Error("SETTLE_API_URL이 비어있습니다.");
-
-    const url = `${SETTLE_API_URL}?action=settle`;
-    const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-    const data = await res.json();
-    if (!data || data.ok !== true) throw new Error(data?.error || "API 응답이 올바르지 않습니다.");
-
-    if (elStatus) elStatus.textContent = "불러오기 완료";
-
-    const transfers = Array.isArray(data.transfers) ? data.transfers : [];
-    const expenses = Array.isArray(data.expenses) ? data.expenses : [];
-
-    elTransfers.innerHTML = transfers.length
-      ? `
-        <table>
-          <thead><tr><th>보내는 사람</th><th>받는 사람</th><th>금액(원)</th></tr></thead>
-          <tbody>
-            ${transfers.map(t => `
-              <tr>
-                <td>${escapeHtml_(t.from || "")}</td>
-                <td>${escapeHtml_(t.to || "")}</td>
-                <td>${formatKrw_(t.amountKrw || 0)}</td>
-              </tr>
-            `).join("")}
-          </tbody>
-        </table>
-      `
-      : `<div class="hint">정산할 내역이 없어요.</div>`;
-
-    elDetails.innerHTML = expenses.length
-      ? `
-        <table>
-          <thead>
-            <tr><th>date</th><th>day</th><th>title</th><th>paid_by</th><th>amount</th><th>participants</th></tr>
-          </thead>
-          <tbody>
-            ${expenses.map(x => `
-              <tr>
-                <td>${escapeHtml_(x.date || "")}</td>
-                <td>${escapeHtml_(x.day || "")}</td>
-                <td>${escapeHtml_(x.title || "")}</td>
-                <td>${escapeHtml_(x.paid_by || "")}</td>
-                <td>${formatKrw_(x.amount || 0)}</td>
-                <td>${escapeHtml_(Array.isArray(x.participants) ? x.participants.join(", ") : "")}</td>
-              </tr>
-            `).join("")}
-          </tbody>
-        </table>
-      `
-      : `<div class="hint">상세 내역이 없습니다.</div>`;
-
-  } catch (err) {
-    console.error("[renderSettle] error:", err);
-    if (elStatus) elStatus.textContent = "불러오기 실패";
-    if (elTransfers) elTransfers.innerHTML = `<div class="hint">${escapeHtml_(String(err.message || err))}</div>`;
-    if (elDetails) elDetails.innerHTML = `<div class="hint">-</div>`;
-  }
-   // ✅ 무조건 마지막에 호출(성공/실패 상관없이)
-  bindSettleForm_();
 }
 
-
-function formatKrw_(n) {
-  const num = Number(n) || 0;
-  return num.toLocaleString("ko-KR");
-}
-
-function escapeHtml_(s) {
-  return String(s)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-}
-
-
-// --- PACKING ---
-function renderPacking(packing){
-  const root = $("#viewPacking");
-  const me = $("#meSelect").value;
-
-  const shared = packing.shared || [];
-  const personalAll = packing.personal || [];
-  const personal = personalAll.filter(x=>String(x.person)===me);
+function renderSouvenir() {
+  const root = document.querySelector("#viewSouvenir");
+  if (!root) return;
 
   root.innerHTML = `
     <div class="card">
-      <div style="font-size:18px;font-weight:900;">공용 준비물</div>
-      <div class="hint">샴푸처럼 공용은 “담당자”를 선택하면 됩니다.</div>
-      ${shared.map(item=>`
-        <div style="margin-top:10px;padding-top:10px;border-top:1px solid #eee;">
-          <div style="font-weight:900;">${item.item}</div>
-          <div class="row" style="align-items:center;margin-top:8px;">
-            <select data-shared-owner="${item.item}">
-              <option value="">담당자 선택</option>
-              ${PEOPLE.map(p=>`<option value="${p}" ${String(item.owner)===p?"selected":""}>${p}</option>`).join("")}
-            </select>
-            <label style="display:flex;align-items:center;gap:8px;margin:0;">
-              <input type="checkbox" data-shared-done="${item.item}" ${String(item.done).toLowerCase()==="true"||item.done===true?"checked":""}/>
-              준비완료
-            </label>
-          </div>
-        </div>
-      `).join("")}
-      <div style="margin-top:12px;">
-        <input id="newSharedItem" placeholder="공용 준비물 추가 (예: 바디워시)" class="big"/>
-        <button id="addSharedBtn" class="btn big" style="margin-top:10px;">공용 준비물 추가</button>
-      </div>
+      <div style="font-size:18px; font-weight:900;">기념품 리스트</div>
+      <div class="hint" style="margin-top:8px;">사야 할 것 / 살 후보 / 산 것 정리용</div>
     </div>
 
     <div class="card">
-      <div style="font-size:18px;font-weight:900;">내 개인 준비물 (${me})</div>
-      <div class="hint">옷처럼 개인용은 본인만 체크됩니다.</div>
-      ${personal.map(item=>`
-        <div style="margin-top:10px;padding-top:10px;border-top:1px solid #eee;">
-          <label style="display:flex;align-items:center;gap:10px;margin:0;">
-            <input type="checkbox" data-personal-done="${item.item}" ${String(item.done).toLowerCase()==="true"||item.done===true?"checked":""}/>
-            <span style="font-weight:900;">${item.item}</span>
-          </label>
-        </div>
-      `).join("")}
-      <div style="margin-top:12px;">
-        <input id="newPersonalItem" placeholder="개인 준비물 추가 (예: 여벌옷)" class="big"/>
-        <button id="addPersonalBtn" class="btn big" style="margin-top:10px;">개인 준비물 추가</button>
-      </div>
+      <div style="font-weight:900; margin-bottom:8px;">살 것</div>
+      <ul style="margin:0; padding-left:18px; line-height:1.8;">
+        <li>면세/드럭스토어</li>
+        <li>과자/특산품</li>
+        <li>가족 선물</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div style="font-weight:900; margin-bottom:8px;">후보</div>
+      <ul style="margin:0; padding-left:18px; line-height:1.8;">
+        <li>생각나는대로 추가</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div style="font-weight:900; margin-bottom:8px;">산 것</div>
+      <div class="hint">여기에 구매 완료 내역을 옮겨 적기</div>
     </div>
   `;
-
-  // bind shared changes
-  shared.forEach(item=>{
-    const ownerSel = document.querySelector(`[data-shared-owner="${item.item}"]`);
-    const doneChk = document.querySelector(`[data-shared-done="${item.item}"]`);
-    ownerSel.addEventListener("change", async ()=>{
-      await apiPost({action:"set_shared_item", item:item.item, owner: ownerSel.value, done: doneChk.checked});
-    });
-    doneChk.addEventListener("change", async ()=>{
-      await apiPost({action:"set_shared_item", item:item.item, owner: ownerSel.value, done: doneChk.checked});
-    });
-  });
-
-  $("#addSharedBtn").addEventListener("click", async ()=>{
-    const v = $("#newSharedItem").value.trim();
-    if (!v) return;
-    await apiPost({action:"set_shared_item", item:v, owner:"", done:false});
-    $("#newSharedItem").value = "";
-    await loadPacking();
-  });
-
-  // personal
-  personal.forEach(item=>{
-    const chk = document.querySelector(`[data-personal-done="${item.item}"]`);
-    chk.addEventListener("change", async ()=>{
-      await apiPost({action:"set_personal_item", person: me, item:item.item, done: chk.checked});
-    });
-  });
-  $("#addPersonalBtn").addEventListener("click", async ()=>{
-    const v = $("#newPersonalItem").value.trim();
-    if (!v) return;
-    await apiPost({action:"set_personal_item", person: me, item:v, done:false});
-    $("#newPersonalItem").value = "";
-    await loadPacking();
-  });
-}
-
-async function loadPacking(){
-  const data = await apiGet("packing");
-  if (!data.ok) { alert(data.error); return; }
-  renderPacking(data.packing);
-}
-
-// --- SETTLE ---
-function renderSettle(summary){
-const root = $("#viewSettle");
-const fx = (summary && summary.fx) ? summary.fx : 0;
-
-  root.innerHTML = `
-    <div class="card">
-      <div style="font-size:18px;font-weight:900;">정산</div>
-      <div class="hint">기준 통화: 원(KRW) / JPY는 환율(하루 1회)로 자동 환산됩니다.</div>
-      <div class="hint">오늘 적용 환율(JPY→KRW): ${fx ? fx.toFixed(4) : "아직 없음 (runDailyFx 1회 실행 필요)"} </div>
-    </div>
-
-  <div class="card">
-  <div style="font-size:18px; font-weight:900; margin-bottom:10px;">지출 추가</div>
-
-  <div class="label">카테고리</div>
-  <div class="chipRow" id="settleCategoryRow">
-    ${CATEGORIES.map(c => `
-      <button type="button" class="chipBtn" data-category="${c}">${c}</button>
-    `).join("")}
-  </div>
-
-  <div class="label" style="margin-top:12px;">금액</div>
-  <input id="settleAmount" class="input" inputmode="numeric" placeholder="예: 26,705" />
-
-  <div class="label" style="margin-top:12px;">통화</div>
-  <div class="chipRow" id="settleCurrencyRow">
-    <button type="button" class="chipBtn" data-currency="KRW">KRW</button>
-    <button type="button" class="chipBtn" data-currency="JPY">JPY</button>
-  </div>
-
-  <div class="label" style="margin-top:12px;">결제자</div>
-  <select id="settlePayer" class="input">
-    ${PEOPLE.map(p=>`<option value="${p}">${p}</option>`).join("")}
-  </select>
-
-  <div style="margin-top:14px; display:flex; gap:10px; align-items:center;">
-    <button id="btnAddExpense" class="btnPrimary" type="button">등록</button>
-    <div id="settleFormMsg" class="hint"></div>
-  </div>
-</div>
-
-
-      <label>카테고리</label>
-      <div class="pill" id="catPill"></div>
-
-      <label>금액</label>
-      <input id="amt" type="number" inputmode="numeric" placeholder="예: 3200" class="big"/>
-
-      <label>통화</label>
-      <div class="pill" id="ccyPill"></div>
-
-      <label>결제자</label>
-      <select id="payer" class="big">${PEOPLE.map(p=>`<option value="${p}">${p}</option>`).join("")}</select>
-
-      <label>Day</label>
-      <select id="day" class="big">${DAYS.map(d=>`<option value="${d}">${d}</option>`).join("")}</select>
-
-      <label>분배 방식</label>
-      <div class="pill" id="splitPill"></div>
-
-      <label>참여자(포함자 선택)</label>
-      <div class="row" id="partBox"></div>
-
-      <label>메모(선택)</label>
-      <input id="note" placeholder="예: 공항 → 호텔 택시" class="big"/>
-
-      <button id="addExpenseBtn" class="btn big" style="margin-top:12px;">등록</button>
-    </div>
-
-    <div class="card">
-      <div style="font-size:18px;font-weight:900;">사람별 정산</div>
-      <table>
-        <thead><tr><th>이름</th><th>낸 돈</th><th>써야 하는 돈</th><th>정산</th></tr></thead>
-        <tbody>
-          ${(summary?.balance||[]).map(b=>`
-            <tr>
-              <td style="font-weight:900;">${b.person}</td>
-              <td>${fmtKRW(b.paidKrw)}</td>
-              <td>${fmtKRW(b.owedKrw)}</td>
-              <td style="font-weight:900;">${b.netKrw>=0?`받을 ${fmtKRW(b.netKrw)}`:`낼 ${fmtKRW(-b.netKrw)}`}</td>
-            </tr>
-          `).join("")}
-        </tbody>
-      </table>
-    </div>
-
-    <div class="card">
-      <div style="font-size:18px;font-weight:900;">자동 송금 리스트</div>
-      ${(summary.transfers||[]).length===0
-        ? `<div class="hint">아직 송금할 내역이 없습니다.</div>`
-        : `<table>
-            <thead><tr><th>보내는 사람</th><th>받는 사람</th><th>금액</th></tr></thead>
-            <tbody>
-              ${summary.transfers.map(t=>`
-                <tr>
-                  <td style="font-weight:900;">${t.from}</td>
-                  <td style="font-weight:900;">${t.to}</td>
-                  <td style="font-weight:900;">${fmtKRW(t.amountKrw)}</td>
-                </tr>
-              `).join("")}
-            </tbody>
-          </table>`
-      }
-      <button id="refreshSummary" class="btnOutline big" style="margin-top:12px;">정산 새로고침</button>
-    </div>
-  `;
-
-  // Pills
-  const catPill = $("#catPill");
-  catPill.innerHTML = CATEGORIES.map((c,i)=>`<button data-cat="${c}" class="${i===0?'on':''}">${c}</button>`).join("");
-  const ccyPill = $("#ccyPill");
-  ccyPill.innerHTML = [`KRW`,`JPY`].map((c,i)=>`<button data-ccy="${c}" class="${i===0?'on':''}">${c}</button>`).join("");
-  const splitPill = $("#splitPill");
-  splitPill.innerHTML = [`DUTCH`,`CUSTOM`].map((c,i)=>`<button data-split="${c}" class="${i===0?'on':''}">${c==='DUTCH'?'더치페이(균등)':'포함자 선택'}</button>`).join("");
-
-  // Participants checkboxes (default all)
-  const partBox = $("#partBox");
-  partBox.innerHTML = PEOPLE.map(p=>`
-    <label style="display:flex;align-items:center;gap:8px;margin:0;">
-      <input type="checkbox" value="${p}" checked />
-      <span style="font-weight:900;">${p}</span>
-    </label>
-  `).join("");
-
-  // Defaults
-  $("#payer").value = localStorage.getItem("me") || PEOPLE[0];
-
-  // Toggle handlers
-  function setOn(containerSel, attr){
-    document.querySelectorAll(containerSel + " button").forEach(b=>{
-      b.addEventListener("click", ()=>{
-        document.querySelectorAll(containerSel + " button").forEach(x=>x.classList.remove("on"));
-        b.classList.add("on");
-      });
-    });
-  }
-  setOn("#catPill","data-cat");
-  setOn("#ccyPill","data-ccy");
-  setOn("#splitPill","data-split");
-
-  // Add expense
-  $("#addExpenseBtn").addEventListener("click", async ()=>{
-    const category = document.querySelector("#catPill button.on").dataset.cat;
-    const currency = document.querySelector("#ccyPill button.on").dataset.ccy;
-    const splitType = document.querySelector("#splitPill button.on").dataset.split;
-    const amount = Number($("#amt").value);
-    const payer = $("#payer").value;
-    const day = $("#day").value;
-    const note = $("#note").value.trim();
-
-    const participants = Array.from(document.querySelectorAll("#partBox input[type=checkbox]"))
-      .filter(x=>x.checked).map(x=>x.value);
-
-    if (!(amount>0)) return alert("금액을 입력하세요.");
-    if (participants.length < 1) return alert("참여자를 최소 1명 선택하세요.");
-
-    const resp = await apiPost({
-      action:"add_expense",
-      category, amount, currency, payer, participants, splitType, day, note
-    });
-    if (!resp.ok) return alert(resp.error);
-
-    $("#amt").value = "";
-    $("#note").value = "";
-    await loadSummary();
-    alert("등록 완료");
-  });
-
-  $("#refreshSummary").addEventListener("click", loadSummary);
-}
-
-async function loadSummary(){
-// ✅ summary를 항상 "객체"로 보장
-const summaryRes = await apiGet("summary"); // 또는 "settle"을 쓰고 있다면 그걸 유지
-const summary = (summaryRes && summaryRes.ok) ? summaryRes : { ok:false, balance:[], transfers:[], fx:{} };
-
-// (옵션) 실패 원인도 화면에 보여주고 싶으면:
-if (!summary.ok) {
-  console.warn("[renderSettle] summary not ok:", summaryRes);
-}  if (!data.ok) { alert(data.error); return; }
-  renderSettle(data);
-}
-
-// --- boot ---
-(async function boot(){
-  initMe();
-  renderSchedule();
-  const status = await apiGet("status");
-  if (!status.ok) alert(status.error);
-
-  await loadPacking();
-  await loadSummary();
-})();
-
-// 탭 전환 + 렌더
-function showTab(tab) {
-  // 화면 토글
-  $("#viewSchedule").style.display = tab === "schedule" ? "block" : "none";
-  $("#viewPacking").style.display  = tab === "packing"  ? "block" : "none";
-  $("#viewSettle").style.display   = tab === "settle"   ? "block" : "none";
-
-  // 버튼 active 토글
-  document.querySelectorAll(".tab").forEach((btn) => {
-    btn.classList.toggle("active", btn.dataset.tab === tab);
-  });
-
-  // 탭별 렌더 호출
-  if (tab === "schedule") renderSchedule();
-  if (tab === "packing")  renderPacking?.(); // renderPacking 있으면 실행
-  if (tab === "settle")   renderSettle();    // ✅ 이게 핵심
-}
-
-// 탭 버튼 클릭 이벤트 연결
-document.querySelectorAll(".tab").forEach((btn) => {
-  btn.addEventListener("click", () => showTab(btn.dataset.tab));
-});
-
-// 최초 1회 기본 탭 렌더
-showTab("schedule");
-
-// ===== settle form logic (교체용) =====
-
-// ✅ 중복 실행에도 안전(재선언 에러 방지)
-var settleFormState = (typeof settleFormState !== "undefined" && settleFormState)
-  ? settleFormState
-  : {
-      category: "",
-      currency: "KRW",
-      amount: "",
-      paid_by: "",
-      participants: []
-    };
-
-// ✅ renderSettle()로 화면을 다시 그릴 때마다 bind가 여러 번 붙는 걸 방지
-function bindSettleForm_() {
-  // 이미 바인딩 했으면 중복 바인딩 방지
-  const btn = document.querySelector("#btnAddExpense");
-  if (!btn) return;
-
-  // ✅ 바인딩 여부 표시(너가 콘솔로 확인하는 그 값)
-  if (btn.dataset.bound === "1") return;
-  btn.dataset.bound = "1";
-
-  // ---- (1) 카테고리 칩 클릭 ----
-  const catRow = document.querySelector("#settleCategoryRow");
-  if (catRow) {
-    catRow.addEventListener("click", (e) => {
-      const chip = e.target.closest("[data-category]");
-      if (!chip) return;
-
-      settleFormState.category = chip.dataset.category || "";
-
-      catRow.querySelectorAll("[data-category]").forEach(x => x.classList.remove("active"));
-      chip.classList.add("active");
-    });
-  }
-
-  // ---- (2) 통화 칩 클릭 ----
-  const curRow = document.querySelector("#settleCurrencyRow");
-  if (curRow) {
-    curRow.addEventListener("click", (e) => {
-      const chip = e.target.closest("[data-currency]");
-      if (!chip) return;
-
-      settleFormState.currency = chip.dataset.currency || "KRW";
-
-      curRow.querySelectorAll("[data-currency]").forEach(x => x.classList.remove("active"));
-      chip.classList.add("active");
-    });
-  }
-
-  // ---- (3) 금액 콤마 ----
-  const elAmt = document.querySelector("#settleAmount");
-  if (elAmt) {
-    elAmt.addEventListener("input", () => {
-      const digits = String(elAmt.value || "").replace(/[^\d]/g, "");
-      elAmt.value = digits ? Number(digits).toLocaleString("ko-KR") : "";
-    });
-  }
-
-  // ---- (4) 등록 버튼 클릭 ----
-  btn.addEventListener("click", async () => {
-    try {
-      btn.disabled = true;
-      await submitExpense_();
-    } finally {
-      btn.disabled = false;
-    }
-  });
-
-  console.log("[bindSettleForm_] bound ✅");
-}
-
-
-async function submitExpense_() {
-  const msg = document.querySelector("#settleFormMsg");
-  const setMsg = (t) => { if (msg) msg.textContent = t; };
-
-  try {
-    const category = settleFormState.category || "";
-    const currency = settleFormState.currency || "KRW";
-
-    const paidBy = String(document.querySelector("#settlePaidBy")?.value || "").trim();
-    const title  = String(document.querySelector("#settleTitle")?.value || "").trim();
-
-    const rawAmt = String(document.querySelector("#settleAmount")?.value || "");
-    const digits = rawAmt.replace(/[^\d]/g, "");
-    const amount = Number(digits);
-
-    const checked = Array.from(document.querySelectorAll(".settlePart:checked"))
-      .map(x => x.value);
-    const participants = checked; // 빈 배열이면 서버에서 전원 N빵 처리
-
-    if (!category) throw new Error("카테고리를 선택해 주세요.");
-    if (!paidBy) throw new Error("결제자를 선택해 주세요.");
-    if (!(amount > 0)) throw new Error("금액을 입력해 주세요.");
-
-    setMsg("등록 중...");
-
-    const payload = {
-      action: "add_expense",
-      date: new Date().toISOString().slice(0,10),
-      day: "",
-      title: title || category,
-      category,
-      paid_by: paidBy,
-      amount,
-      currency,
-      participants
-    };
-
-    const res = await apiPost(payload);
-    if (!res || res.ok !== true) throw new Error(res?.error || "등록 실패");
-
-    setMsg("등록 완료 ✅");
-
-    // 입력값 초기화
-    const elAmt = document.querySelector("#settleAmount");
-    const elTitle = document.querySelector("#settleTitle");
-    if (elAmt) elAmt.value = "";
-    if (elTitle) elTitle.value = "";
-    document.querySelectorAll(".settlePart").forEach(cb => cb.checked = false);
-
-    // 정산 다시 불러오기
-    await renderSettle();
-
-  } catch (e) {
-    setMsg(String(e.message || e));
-  }
 }
 
