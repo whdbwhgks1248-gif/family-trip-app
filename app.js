@@ -56,8 +56,6 @@ function setActiveTab(name){
   console.log("[DEBUG] settle tab clicked", el);
 }
 
-}
-
 
 // --- init ---
 function initMe(){
