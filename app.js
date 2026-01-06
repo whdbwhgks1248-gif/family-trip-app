@@ -151,13 +151,14 @@ const scheduleData = {
         "• SOU・SOU deportare\n\n" +
         "[키디랜드]\n" +
         "• 키디랜드 교토시조가와라마치점\n\n" +
-        "<span class='highlight'>[니시키시장 유의사항]</span>\n" +
+        "<span style='color:#ff5a7a;font-weight:800;'>[니시키시장 유의사항]</span>\n" +
         "• 시장 내 ‘먹으면서 걷기’ 금지\n" +
         "• 구입한 가게 앞/가게 안에서 시식 가능"
     },
     {
       time: "17:00 - 18:30",
-      title: "레드락 스테이크 덮밥 / 장어덮밥"
+      title: "레드락 스테이크 덮밥 / 장어덮밥",
+      note: "• <a href='https://maps.app.goo.gl/oPyQgQeqjbsGnu8c6 target='_blank' rel='noopener noreferrer'>레드락 스테이크 덮밥</a>\n•<a href='https://maps.app.goo.gl/TmYzrRZQdTyZWosg8'_blank' rel='noopener noreferrer'>쿄우나와</a> "
     },
     {
       time: "18:30 - 19:30",
