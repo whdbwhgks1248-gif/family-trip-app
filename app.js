@@ -257,87 +257,106 @@ function renderSchedule() {
   `;
 }
 async function renderSettle() {
-  const root = document.querySelector("#viewSettle");
+  const root = $("#viewSettle");
   root.innerHTML = `
     <div class="card">
-      <div style="font-size:18px;font-weight:900;">정산</div>
-      <div class="hint">EXPENSES 시트 입력 기준으로 자동 계산합니다. (settled=TRUE 항목 제외)</div>
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+        <div style="font-size:18px; font-weight:900;">정산</div>
+        <button id="btnRefreshSettle" class="btnOutline" style="padding:10px 12px;">새로고침</button>
+      </div>
+      <div class="hint">settled=TRUE 인 항목은 정산에서 제외됩니다.</div>
     </div>
     <div class="card"><div class="hint">불러오는 중...</div></div>
   `;
 
+  $("#btnRefreshSettle").onclick = () => renderSettle();
+
   try {
-    const res = await fetch(`${SETTLE_API_URL}?mode=settle`, { cache: "no-store" });
+    const res = await fetch(`${SETTLE_API_URL}?action=settle`, { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
+    if (!data.ok) throw new Error(data.error || "API error");
 
-    const transfersHtml = (data.transfers || []).length
+    // 1) 상단: 누가→누구에게→얼마
+    const transfers = (data.transfers || []);
+    const transferHtml = transfers.length
       ? `
-        <div class="card">
-          <div style="font-weight:900;margin-bottom:10px;">누가 누구에게 보내야 해?</div>
-          <div style="display:flex;flex-direction:column;gap:8px;">
-            ${(data.transfers || []).map(t => `
-              <div style="display:flex;justify-content:space-between;gap:10px;">
-                <div><b>${t.from}</b> → <b>${t.to}</b></div>
-                <div style="font-weight:900;">${Number(t.amountKrw).toLocaleString()}원</div>
-              </div>
+        <table>
+          <thead>
+            <tr><th>보내는 사람</th><th>받는 사람</th><th>금액(원)</th></tr>
+          </thead>
+          <tbody>
+            ${transfers.map(t => `
+              <tr>
+                <td>${escapeHtml_(t.from)}</td>
+                <td>${escapeHtml_(t.to)}</td>
+                <td>${formatKrw_(t.amountKrw)}</td>
+              </tr>
             `).join("")}
-          </div>
-        </div>
+          </tbody>
+        </table>
       `
-      : `
-        <div class="card">
-          <div style="font-weight:900;">정산할 내역이 없어요</div>
-          <div class="hint">EXPENSES에 금액을 입력했는지 확인해 주세요.</div>
-        </div>
-      `;
+      : `<div class="hint">정산할 내역이 없어요(모두 settled=TRUE이거나 지출이 비어있음).</div>`;
 
-    // 날짜별 상세(표)
-    const rows = data.rows || [];
-    const detailRowsHtml = rows.length
-      ? rows.map(r => `
-        <tr>
-          <td>${r.date || ""}</td>
-          <td>${r.day || ""}</td>
-          <td>${r.title || ""}</td>
-          <td>${r.category || ""}</td>
-          <td>${r.paidBy || ""}</td>
-          <td style="text-align:right;">${Number(r.amount).toLocaleString()} ${r.currency || ""}</td>
-          <td>${(r.participants || []).join(", ")}</td>
-        </tr>
-      `).join("")
-      : `<tr><td colspan="7" class="hint">내역이 없습니다.</td></tr>`;
-
-    const detailHtml = `
-      <div class="card">
-        <div style="font-weight:900;margin-bottom:10px;">상세 내역(정산 대상만)</div>
+    // 2) 하단: 상세 리스트
+    const expenses = (data.expenses || []);
+    const listHtml = expenses.length
+      ? `
         <table>
           <thead>
             <tr>
-              <th>날짜</th>
-              <th>Day</th>
-              <th>항목</th>
-              <th>분류</th>
-              <th>결제자</th>
-              <th style="text-align:right;">금액</th>
-              <th>참여자</th>
+              <th>date</th><th>day</th><th>title</th><th>paid_by</th><th>amount</th><th>participants</th>
             </tr>
           </thead>
-          <tbody>${detailRowsHtml}</tbody>
+          <tbody>
+            ${expenses.map(x => `
+              <tr>
+                <td>${escapeHtml_(x.date || "")}</td>
+                <td>${escapeHtml_(x.day || "")}</td>
+                <td>${escapeHtml_(x.title || "")}</td>
+                <td>${escapeHtml_(x.paid_by || "")}</td>
+                <td>${formatKrw_(x.amount || 0)}</td>
+                <td>${escapeHtml_((x.participants || []).join(", "))}</td>
+              </tr>
+            `).join("")}
+          </tbody>
         </table>
-        <div class="hint" style="margin-top:10px;">사전정산/정산완료는 EXPENSES의 settled=TRUE로 제외됩니다.</div>
+      `
+      : `<div class="hint">상세 내역이 없습니다.</div>`;
+
+    root.innerHTML = `
+      <div class="card">
+        <div style="font-size:18px; font-weight:900; margin-bottom:10px;">누가 누구에게 얼마</div>
+        ${transferHtml}
+      </div>
+
+      <div class="card">
+        <div style="font-size:18px; font-weight:900; margin-bottom:10px;">상세 내역</div>
+        ${listHtml}
       </div>
     `;
-
-    root.innerHTML = `${transfersHtml}${detailHtml}`;
   } catch (err) {
     root.innerHTML = `
       <div class="card">
-        <div style="font-weight:900;">정산 데이터를 불러오지 못했어요</div>
-        <div class="hint">Apps Script Web App URL / 권한(Anyone) / mode=settle 응답을 확인해 주세요.</div>
+        <div style="font-weight:900;">정산 불러오기 실패</div>
+        <div class="hint">${escapeHtml_(String(err.message || err))}</div>
       </div>
     `;
-    console.error(err);
   }
+}
+
+function formatKrw_(n) {
+  const num = Number(n) || 0;
+  return num.toLocaleString("ko-KR");
+}
+
+function escapeHtml_(s) {
+  return String(s)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
 
@@ -595,3 +614,33 @@ async function loadSummary(){
   await loadPacking();
   await loadSummary();
 })();
+
+// (없으면 추가) 간단 셀렉터 헬퍼
+const $ = (sel) => document.querySelector(sel);
+
+// 탭 전환 + 렌더
+function showTab(tab) {
+  // 화면 토글
+  $("#viewSchedule").style.display = tab === "schedule" ? "block" : "none";
+  $("#viewPacking").style.display  = tab === "packing"  ? "block" : "none";
+  $("#viewSettle").style.display   = tab === "settle"   ? "block" : "none";
+
+  // 버튼 active 토글
+  document.querySelectorAll(".tab").forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.tab === tab);
+  });
+
+  // 탭별 렌더 호출
+  if (tab === "schedule") renderSchedule();
+  if (tab === "packing")  renderPacking?.(); // renderPacking 있으면 실행
+  if (tab === "settle")   renderSettle();    // ✅ 이게 핵심
+}
+
+// 탭 버튼 클릭 이벤트 연결
+document.querySelectorAll(".tab").forEach((btn) => {
+  btn.addEventListener("click", () => showTab(btn.dataset.tab));
+});
+
+// 최초 1회 기본 탭 렌더
+showTab("schedule");
+
