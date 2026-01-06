@@ -174,7 +174,7 @@ const scheduleData = {
     {
       time: "20:00 -",
       title: "→ 이온몰",
-      note: "• 다이소 21시 마감\n• 마켓 가든 KOHYO 이온몰 KYOTO점 22시 마감"
+      note: "• 다이소 21시 마감\n• 마켓 가든 22시 마감"
     }
   ]
 },
