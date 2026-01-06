@@ -74,7 +74,7 @@ const scheduleData = {
         {
           time: "21:15 - 22:30",
           title: "→ 카몬 호텔 난바",
-          note: "• <a href='https://blog.naver.com/bbh4313/224127071321' target='_blank'>ATM 기계 위치</a>\n• 라피트 막차 시간 알아보기",
+          note: "• <a href='https://blog.naver.com/bbh4313/224127071321' target='_blank'>ATM 위치</a>\n• 라피트 막차 시간 : 22시 55분",
           mapUrl: ""
         },
         {
@@ -82,7 +82,7 @@ const scheduleData = {
           title: "호텔 도착",
           mapUrl: "https://maps.google.com/?q=...",
           image: "./images/kamon-hotel-namba.png",
-          note: "01- 영수, 연실, 한나, 유나\n02- 아라, 현아, 건"
+          note: "• 숙박세 인당 ¥200\n01- 영수, 연실, 한나, 유나\n02- 아라, 현아, 건"
         }
 
       ]
@@ -98,13 +98,14 @@ const scheduleData = {
       time: "08:00 - 09:30",
       title: "난바역 → 교토역",
       mapUrl: "https://www.jorudan.co.jp/time/to/%E4%BA%AC%E9%83%BD_%E5%A4%A7%E9%98%AA/?Dym=202602&Ddd=18&r=%EF%BC%AA%EF%BC%B2%E4%BA%AC%E9%83%BD%E7%B7%9A",
-      note: "•신쾌속 08:56편 출발\n• JR 신쾌속 소요시간 : 약 30분\n• <a href=\"https://www.jorudan.co.jp/time/to/%E4%BA%AC%E9%83%BD_%E5%A4%A7%E9%98%AA/?Dym=202602&Ddd=18&r=%EF%BC%AA%EF%BC%B2%E4%BA%AC%E9%83%BD%E7%B7%9A\" target=\"_blank\">신쾌속 시간표</a>"
+      note: "• 신쾌속 08:56편 출발\n• JR 신쾌속 소요시간 : 약 30분\n• 교통비 : ¥820\n• <a href=\"https://www.jorudan.co.jp/time/to/%E4%BA%AC%E9%83%BD_%E5%A4%A7%E9%98%AA/?Dym=202602&Ddd=18&r=%EF%BC%AA%EF%BC%B2%E4%BA%AC%E9%83%BD%E7%B7%9A\" target=\"_blank\">신쾌속 시간표</a>"
     },
     {
       time: "09:30 - 10:00",
       title: "호텔 체크인", 
       image: "images/Rinn Kujofujinoki Central.png",
-      mapUrl: "https://maps.app.goo.gl/5G3xC3bxrmSEVxULA"
+      mapUrl: "https://maps.app.goo.gl/5G3xC3bxrmSEVxULA",
+      note: "• 숙박세 : ¥400"
     },
     {
       time: "10:30 - 11:00",
@@ -114,14 +115,15 @@ const scheduleData = {
     },
     {
       time: "11:00 - 12:00",
-      title: "타이쇼 하나나 식사 (유나 예약)",
+      title: "타이쇼 하나나 식사",
       image: "images/HANANA.jpg",
-      note: "• <a href='https://blog.naver.com/jiyoo9697/223874041269' target='_blank' rel='noopener noreferrer'>타이쇼 하나나 정보</a>"
+      note: "• 현금결제만 가능\n• <a href='https://blog.naver.com/jiyoo9697/223874041269' target='_blank' rel='noopener noreferrer'>타이쇼 하나나 정보</a>"
     }
     ,
     {
       time: "12:00 - 14:30",
       title: "아라시야마",
+      image: "images/Arashiyama.png",
       note:
         "① 아라시야마 치쿠린\n" +
         "② 아라시야마 대나무길\n" +
@@ -136,11 +138,12 @@ const scheduleData = {
       time: "14:30 - 15:00",
       title: "🚕 니시키 시장",
       mapUrl: "https://maps.app.goo.gl/QnAwAYi3LdAShYQW6",
-      note: "• 택시 도착 지점은 산리오 갤러리 교토로 찍기"
+      note: "• 택시 도착 지점은 산리오 갤러리 교토로 찍기\n• 예상 택시비 : 30,000원"
     },
     {
       time: "15:00 - 17:00",
       title: "니시키 시장 근처",
+      image: "images/nishiki.png",
       note:
         "[SOU・SOU]\n" +
         "• SOU・SOU 타비\n" +
@@ -160,7 +163,7 @@ const scheduleData = {
       time: "17:00 - 18:30",
       title: "레드락 스테이크 덮밥 / 장어덮밥",
       image: "images/kyo-unawa.jpg",
-      note: "• <a href='https://maps.app.goo.gl/oPyQgQeqjbsGnu8c6 target='_blank' rel='noopener noreferrer'>레드락 스테이크 덮밥</a>\n•<a href='https://maps.app.goo.gl/TmYzrRZQdTyZWosg8'_blank' rel='noopener noreferrer'> 쿄우나와</a> "
+      note: "• 레드락 : 현금결제만 가능\n• <a href='https://maps.app.goo.gl/oPyQgQeqjbsGnu8c6 target='_blank' rel='noopener noreferrer'>레드락 스테이크 덮밥</a>\n•<a href='https://maps.app.goo.gl/TmYzrRZQdTyZWosg8'_blank' rel='noopener noreferrer'> 쿄우나와</a> "
     },
     {
       time: "18:30 - 19:30",
@@ -169,11 +172,13 @@ const scheduleData = {
     },
     {
       time: "19:30 - 20:00",
-      title: "🚕 → 숙소"
+      title: "🚕 → 숙소",
+      note: "• 예상 택시비 : 10,000원"
     },
     {
       time: "20:00 -",
       title: "→ 이온몰",
+      image: "images/aeonmall.jpeg",
       note: "• 다이소 21시 마감\n• 마켓 가든 22시 마감"
     }
   ]
