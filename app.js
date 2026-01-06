@@ -258,6 +258,12 @@ function renderSchedule() {
 }
 async function renderSettle() {
   const root = $("#viewSettle");
+  if (!root) return;
+
+  console.log("[renderSettle] called");
+
+  // ✅ 1) 기본 UI(헤더/새로고침 버튼/컨테이너) 먼저 고정 렌더
+  //    이후에는 아래 컨테이너들만 업데이트해서 버튼이 사라지지 않게 함
   root.innerHTML = `
     <div class="card">
       <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
@@ -265,20 +271,50 @@ async function renderSettle() {
         <button id="btnRefreshSettle" class="btnOutline" style="padding:10px 12px;">새로고침</button>
       </div>
       <div class="hint">settled=TRUE 인 항목은 정산에서 제외됩니다.</div>
+      <div id="settleStatus" class="hint" style="margin-top:10px;">불러오는 중...</div>
     </div>
-    <div class="card"><div class="hint">불러오는 중...</div></div>
+
+    <div class="card">
+      <div style="font-size:18px; font-weight:900; margin-bottom:10px;">누가 누구에게 얼마</div>
+      <div id="settleTransfers"></div>
+    </div>
+
+    <div class="card">
+      <div style="font-size:18px; font-weight:900; margin-bottom:10px;">상세 내역</div>
+      <div id="settleDetails"></div>
+    </div>
   `;
 
-  $("#btnRefreshSettle").onclick = () => renderSettle();
+  // ✅ 버튼 이벤트는 "기본 UI 렌더 직후"에 연결
+  const btn = $("#btnRefreshSettle");
+  if (btn) btn.onclick = () => renderSettle();
+
+  const elStatus = $("#settleStatus");
+  const elTransfers = $("#settleTransfers");
+  const elDetails = $("#settleDetails");
 
   try {
-    const res = await fetch(`${SETTLE_API_URL}?action=settle`, { cache: "no-store" });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    if (!data.ok) throw new Error(data.error || "API error");
+    // ✅ 2) API URL 미정의 방어 (이거면 100% 빈 화면/오류)
+    if (typeof SETTLE_API_URL === "undefined" || !SETTLE_API_URL) {
+      throw new Error("SETTLE_API_URL이 설정되어 있지 않습니다. app.js 상단 설정값을 확인하세요.");
+    }
 
-    // 1) 상단: 누가→누구에게→얼마
-    const transfers = (data.transfers || []);
+    // ✅ 3) fetch
+    const url = `${SETTLE_API_URL}?action=settle`;
+    console.log("[renderSettle] fetching:", url);
+
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+    const data = await res.json();
+    console.log("[renderSettle] response:", data);
+
+    if (!data || !data.ok) throw new Error((data && data.error) ? data.error : "API error");
+
+    if (elStatus) elStatus.textContent = "불러오기 완료";
+
+    // ✅ 4) 상단: transfers
+    const transfers = Array.isArray(data.transfers) ? data.transfers : [];
     const transferHtml = transfers.length
       ? `
         <table>
@@ -288,9 +324,9 @@ async function renderSettle() {
           <tbody>
             ${transfers.map(t => `
               <tr>
-                <td>${escapeHtml_(t.from)}</td>
-                <td>${escapeHtml_(t.to)}</td>
-                <td>${formatKrw_(t.amountKrw)}</td>
+                <td>${escapeHtml_(t.from || "")}</td>
+                <td>${escapeHtml_(t.to || "")}</td>
+                <td>${formatKrw_(t.amountKrw || 0)}</td>
               </tr>
             `).join("")}
           </tbody>
@@ -298,8 +334,10 @@ async function renderSettle() {
       `
       : `<div class="hint">정산할 내역이 없어요(모두 settled=TRUE이거나 지출이 비어있음).</div>`;
 
-    // 2) 하단: 상세 리스트
-    const expenses = (data.expenses || []);
+    if (elTransfers) elTransfers.innerHTML = transferHtml;
+
+    // ✅ 5) 하단: expenses 상세
+    const expenses = Array.isArray(data.expenses) ? data.expenses : [];
     const listHtml = expenses.length
       ? `
         <table>
@@ -316,7 +354,7 @@ async function renderSettle() {
                 <td>${escapeHtml_(x.title || "")}</td>
                 <td>${escapeHtml_(x.paid_by || "")}</td>
                 <td>${formatKrw_(x.amount || 0)}</td>
-                <td>${escapeHtml_((x.participants || []).join(", "))}</td>
+                <td>${escapeHtml_(Array.isArray(x.participants) ? x.participants.join(", ") : "")}</td>
               </tr>
             `).join("")}
           </tbody>
@@ -324,26 +362,26 @@ async function renderSettle() {
       `
       : `<div class="hint">상세 내역이 없습니다.</div>`;
 
-    root.innerHTML = `
-      <div class="card">
-        <div style="font-size:18px; font-weight:900; margin-bottom:10px;">누가 누구에게 얼마</div>
-        ${transferHtml}
-      </div>
+    if (elDetails) elDetails.innerHTML = listHtml;
 
-      <div class="card">
-        <div style="font-size:18px; font-weight:900; margin-bottom:10px;">상세 내역</div>
-        ${listHtml}
-      </div>
-    `;
   } catch (err) {
-    root.innerHTML = `
-      <div class="card">
-        <div style="font-weight:900;">정산 불러오기 실패</div>
+    console.error("[renderSettle] error:", err);
+
+    if (elStatus) elStatus.textContent = "불러오기 실패";
+
+    // ✅ 실패 메시지는 아래 “누가 누구에게 얼마” 영역에 보여주기
+    if (elTransfers) {
+      elTransfers.innerHTML = `
+        <div class="hint" style="font-weight:900;">정산 불러오기 실패</div>
         <div class="hint">${escapeHtml_(String(err.message || err))}</div>
-      </div>
-    `;
+      `;
+    }
+
+    // 상세 영역은 비워둠
+    if (elDetails) elDetails.innerHTML = `<div class="hint">-</div>`;
   }
 }
+
 
 function formatKrw_(n) {
   const num = Number(n) || 0;
