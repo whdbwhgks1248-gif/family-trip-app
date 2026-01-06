@@ -34,7 +34,12 @@ function setActiveTab(name){
   if (viewSchedule) viewSchedule.style.display = name==="schedule" ? "" : "none";
   if (viewPacking)  viewPacking.style.display  = name==="packing" ? "" : "none";
   if (viewSettle)   viewSettle.style.display   = name==="settle" ? "" : "none";
-
+  
+  if (name === "schedule") renderSchedule();
+  if (name === "packing")  renderPacking();
+  if (name === "settle")   renderSettle();
+}
+  
   // ✅ 일정 탭에서는 숨김
   const meCard = document.querySelector("#meCard");
   if (meCard) meCard.style.display = (name === "schedule") ? "none" : "";
