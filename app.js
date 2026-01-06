@@ -751,18 +751,67 @@ document.querySelectorAll(".tab").forEach((btn) => {
 // 최초 1회 기본 탭 렌더
 showTab("schedule");
 
-// ===== settle form logic (붙여넣기 시작) =====
+// ===== settle form logic (교체용) =====
 
-// 정산 입력 폼 상태
-let settleFormState = {
-  category: "",
-  currency: "KRW",
-  amount: "",
-  paid_by: "",
-  participants: [] // 필요 없으면 지워도 됨
-};
+// ✅ 중복 실행에도 안전(재선언 에러 방지)
+var settleFormState = (typeof settleFormState !== "undefined" && settleFormState)
+  ? settleFormState
+  : {
+      category: "",
+      currency: "KRW",
+      amount: "",
+      paid_by: "",
+      participants: []
+    };
 
-function bindSettleForm_() 
+// ✅ renderSettle()로 화면을 다시 그릴 때마다 bind가 여러 번 붙는 걸 방지
+function bindSettleForm_() {
+  // 0) 필요한 엘리먼트가 있는지 먼저 확인
+  const catRow = document.querySelector("#settleCategoryRow");
+  const curRow = document.querySelector("#settleCurrencyRow");
+  const elAmt  = document.querySelector("#settleAmount");
+  const btnAdd = document.querySelector("#btnAddExpense");
+
+  // 이 4개 중 하나라도 없으면 “클릭 안됨”이 정상이라서, 조용히 종료
+  if (!catRow || !curRow || !elAmt || !btnAdd) return;
+
+  // 이미 바인딩했으면 중복 바인딩 방지
+  if (btnAdd.dataset.bound === "1") return;
+  btnAdd.dataset.bound = "1";
+
+  // 1) 카테고리 선택
+  catRow.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-category]");
+    if (!btn) return;
+
+    settleFormState.category = btn.dataset.category;
+
+    catRow.querySelectorAll(".chipBtn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+  });
+
+  // 2) 통화 선택
+  curRow.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-currency]");
+    if (!btn) return;
+
+    settleFormState.currency = btn.dataset.currency;
+
+    curRow.querySelectorAll(".chipBtn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+  });
+
+  // 3) 금액 자동 콤마
+  elAmt.addEventListener("input", () => {
+    const digits = String(elAmt.value || "").replace(/[^\d]/g, "");
+    if (!digits) { elAmt.value = ""; return; }
+    elAmt.value = Number(digits).toLocaleString("ko-KR");
+  });
+
+  // 4) 등록 버튼
+  btnAdd.onclick = () => submitExpense_();
+}
+
 async function submitExpense_() {
   const msg = document.querySelector("#settleFormMsg");
   const setMsg = (t) => { if (msg) msg.textContent = t; };
@@ -772,15 +821,15 @@ async function submitExpense_() {
     const currency = settleFormState.currency || "KRW";
 
     const paidBy = String(document.querySelector("#settlePaidBy")?.value || "").trim();
-    const title = String(document.querySelector("#settleTitle")?.value || "").trim();
+    const title  = String(document.querySelector("#settleTitle")?.value || "").trim();
 
     const rawAmt = String(document.querySelector("#settleAmount")?.value || "");
     const digits = rawAmt.replace(/[^\d]/g, "");
     const amount = Number(digits);
 
-    // participants: 체크된 사람만, 없으면 빈 배열(→ 서버에서 전원 N빵 규칙 적용하거나, 여기서 PEOPLE 넣어도 됨)
-    const checked = Array.from(document.querySelectorAll(".settlePart:checked")).map(x => x.value);
-    const participants = checked; // 빈 배열이면 "전원 N빵"으로 처리할 계획
+    const checked = Array.from(document.querySelectorAll(".settlePart:checked"))
+      .map(x => x.value);
+    const participants = checked; // 빈 배열이면 서버에서 전원 N빵 처리
 
     if (!category) throw new Error("카테고리를 선택해 주세요.");
     if (!paidBy) throw new Error("결제자를 선택해 주세요.");
@@ -790,23 +839,26 @@ async function submitExpense_() {
 
     const payload = {
       action: "add_expense",
-      date: new Date().toISOString().slice(0,10), // YYYY-MM-DD
-      day: "", // day는 안 쓰기로 했으니 빈 값
+      date: new Date().toISOString().slice(0,10),
+      day: "",
       title: title || category,
       category,
       paid_by: paidBy,
       amount,
       currency,
-      participants // []면 서버에서 전원 N빵 처리하도록
+      participants
     };
 
     const res = await apiPost(payload);
     if (!res || res.ok !== true) throw new Error(res?.error || "등록 실패");
 
     setMsg("등록 완료 ✅");
-    // 입력값 일부 초기화
-    document.querySelector("#settleAmount").value = "";
-    document.querySelector("#settleTitle").value = "";
+
+    // 입력값 초기화
+    const elAmt = document.querySelector("#settleAmount");
+    const elTitle = document.querySelector("#settleTitle");
+    if (elAmt) elAmt.value = "";
+    if (elTitle) elTitle.value = "";
     document.querySelectorAll(".settlePart").forEach(cb => cb.checked = false);
 
     // 정산 다시 불러오기
