@@ -130,7 +130,7 @@ const scheduleData = {
       time: "10:30 - 11:00",
       title: "→ 타이쇼 하나나",
       mapUrl: "https://maps.app.goo.gl/fauUxg3ejMhf2pWj7",
-      note: "•예약 필요(유나)"
+      note: "• 예약 필요(유나)"
     },
     {
       time: "11:00 - 12:00",
@@ -256,7 +256,7 @@ const scheduleData = {
     {
       time: "17:30 - 19:00",
       title: "Kaneko",
-      note: "• <a href='https://www.instagram.com/kaneko_kyoto?igsh=Nmg1Y2Q0NWljZGI3&utm_source=qr'_blank' rel='noopener noreferrer'>인스타그램</a>
+      note: "• <a href='https://www.instagram.com/kaneko_kyoto?igsh=Nmg1Y2Q0NWljZGI3&utm_source=qr'_blank' rel='noopener noreferrer'>인스타그램</a>"
       images: [
         // ✅ 여기 2개 이미지만 “안 잘리게” 옵션 추가
         { src: "images/kaneko-confirm-1.png", alt: "Kaneko 예약확정서 1", fit: "contain" },
