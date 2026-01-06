@@ -272,13 +272,20 @@ function renderSchedule() {
     }).join("")}
   `;
 }
+
+// 전역 상태(없으면 추가)
+const settleFormState = {
+  category: "",
+  currency: "KRW",
+};
+
 async function renderSettle() {
   const root = $("#viewSettle");
   if (!root) return;
 
   console.log("[renderSettle] called");
 
-  // ✅ 1) 기본 UI(헤더/새로고침 버튼/컨테이너) 먼저 고정 렌더
+  // ✅ 화면을 '추가'가 아니라 '교체'로만 렌더 (중복 방지)
   root.innerHTML = `
     <div class="card">
       <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
@@ -287,6 +294,49 @@ async function renderSettle() {
       </div>
       <div class="hint">settled=TRUE 인 항목은 정산에서 제외됩니다.</div>
       <div id="settleStatus" class="hint" style="margin-top:10px;">불러오는 중...</div>
+    </div>
+
+    <div class="card">
+      <div style="font-size:18px; font-weight:900; margin-bottom:10px;">지출 추가</div>
+
+      <div class="hint" style="margin-bottom:6px;">카테고리</div>
+      <div id="settleCategoryRow" style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+        ${CATEGORIES.map(c => `
+          <button type="button" class="chipBtn" data-category="${escapeHtml_(c)}">${escapeHtml_(c)}</button>
+        `).join("")}
+      </div>
+
+      <div class="hint" style="margin-bottom:6px;">금액</div>
+      <input id="settleAmount" inputmode="numeric" placeholder="예: 26,705" class="input" style="width:100%; margin-bottom:12px;" />
+
+      <div class="hint" style="margin-bottom:6px;">통화</div>
+      <div id="settleCurrencyRow" style="display:flex; gap:8px; margin-bottom:12px;">
+        ${["KRW","JPY"].map(cur => `
+          <button type="button" class="chipBtn ${cur==="KRW" ? "active":""}" data-currency="${cur}">${cur}</button>
+        `).join("")}
+      </div>
+
+      <div class="hint" style="margin-bottom:6px;">결제자</div>
+      <select id="settlePaidBy" class="select" style="width:100%; margin-bottom:12px;">
+        ${PEOPLE.map(p => `<option value="${escapeHtml_(p)}">${escapeHtml_(p)}</option>`).join("")}
+      </select>
+
+      <div class="hint" style="margin-bottom:6px;">참여자(선택)</div>
+      <div class="hint" style="margin-bottom:6px;">※ 아무도 선택 안 하면 자동으로 “전원 N빵”</div>
+      <div id="settleParticipants" style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+        ${PEOPLE.map(p => `
+          <label style="display:flex; align-items:center; gap:6px;">
+            <input type="checkbox" class="settlePart" value="${escapeHtml_(p)}" />
+            <span>${escapeHtml_(p)}</span>
+          </label>
+        `).join("")}
+      </div>
+
+      <div class="hint" style="margin-bottom:6px;">메모(선택)</div>
+      <input id="settleTitle" placeholder="예: 공항 → 호텔 택시" class="input" style="width:100%; margin-bottom:12px;" />
+
+      <button id="btnAddExpense" class="btnPrimary" style="width:100%;">등록</button>
+      <div id="settleFormMsg" class="hint" style="margin-top:8px;"></div>
     </div>
 
     <div class="card">
@@ -300,50 +350,36 @@ async function renderSettle() {
     </div>
   `;
 
-  // ✅ 2) 버튼 이벤트는 렌더 직후 연결
-  const btn = $("#btnRefreshSettle");
-  if (btn) btn.onclick = () => renderSettle();
+  // ✅ 버튼 이벤트
+  $("#btnRefreshSettle").onclick = () => renderSettle();
 
+  // ✅ 폼 이벤트 바인딩(중요)
+  if (typeof bindSettleForm_ === "function") bindSettleForm_();
+
+  // ✅ 데이터 로딩
   const elStatus = $("#settleStatus");
   const elTransfers = $("#settleTransfers");
   const elDetails = $("#settleDetails");
 
-  // ✅ 3) (선택) 지출추가 폼이 있다면 이벤트 바인딩
-  // - 아직 bindSettleForm_ 함수가 없을 수도 있으니 방어
-  if (typeof bindSettleForm_ === "function") {
-    try { bindSettleForm_(); } catch (e) { console.warn("[bindSettleForm_] failed:", e); }
-  }
-
   try {
-    // ✅ 4) API URL 미정의 방어
-    if (typeof SETTLE_API_URL === "undefined" || !SETTLE_API_URL) {
-      throw new Error("SETTLE_API_URL이 설정되어 있지 않습니다. app.js 상단 설정값을 확인하세요.");
-    }
+    if (!SETTLE_API_URL) throw new Error("SETTLE_API_URL이 비어있습니다.");
 
-    // ✅ 5) fetch
     const url = `${SETTLE_API_URL}?action=settle`;
-    console.log("[renderSettle] fetching:", url);
-
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
     const data = await res.json();
-    if (!data || data.ok !== true) {
-      throw new Error(data && data.error ? String(data.error) : "정산 데이터 형식이 올바르지 않습니다.");
-    }
+    if (!data || data.ok !== true) throw new Error(data?.error || "API 응답이 올바르지 않습니다.");
 
     if (elStatus) elStatus.textContent = "불러오기 완료";
 
-    // ✅ 6) transfers / expenses
     const transfers = Array.isArray(data.transfers) ? data.transfers : [];
-    const expenses  = Array.isArray(data.expenses)  ? data.expenses  : [];
+    const expenses = Array.isArray(data.expenses) ? data.expenses : [];
 
-    const transferHtml = transfers.length
+    elTransfers.innerHTML = transfers.length
       ? `
         <table>
-          <thead>
-            <tr><th>보내는 사람</th><th>받는 사람</th><th>금액(원)</th></tr>
-          </thead>
+          <thead><tr><th>보내는 사람</th><th>받는 사람</th><th>금액(원)</th></tr></thead>
           <tbody>
             ${transfers.map(t => `
               <tr>
@@ -355,17 +391,13 @@ async function renderSettle() {
           </tbody>
         </table>
       `
-      : `<div class="hint">정산할 내역이 없어요(모두 settled=TRUE이거나 지출이 비어있음).</div>`;
+      : `<div class="hint">정산할 내역이 없어요.</div>`;
 
-    if (elTransfers) elTransfers.innerHTML = transferHtml;
-
-    const listHtml = expenses.length
+    elDetails.innerHTML = expenses.length
       ? `
         <table>
           <thead>
-            <tr>
-              <th>date</th><th>day</th><th>title</th><th>paid_by</th><th>amount</th><th>participants</th>
-            </tr>
+            <tr><th>date</th><th>day</th><th>title</th><th>paid_by</th><th>amount</th><th>participants</th></tr>
           </thead>
           <tbody>
             ${expenses.map(x => `
@@ -383,24 +415,13 @@ async function renderSettle() {
       `
       : `<div class="hint">상세 내역이 없습니다.</div>`;
 
-    if (elDetails) elDetails.innerHTML = listHtml;
-
   } catch (err) {
     console.error("[renderSettle] error:", err);
-
     if (elStatus) elStatus.textContent = "불러오기 실패";
-
-    if (elTransfers) {
-      elTransfers.innerHTML = `
-        <div class="hint" style="font-weight:900;">정산 불러오기 실패</div>
-        <div class="hint">${escapeHtml_(String(err.message || err))}</div>
-      `;
-    }
-
+    if (elTransfers) elTransfers.innerHTML = `<div class="hint">${escapeHtml_(String(err.message || err))}</div>`;
     if (elDetails) elDetails.innerHTML = `<div class="hint">-</div>`;
   }
 }
-
 
 
 function formatKrw_(n) {
@@ -735,90 +756,57 @@ const settleFormState = {
   currency: "",
 };
 
-function bindSettleForm_() {
-  // 1) 카테고리 선택
-  const catRow = document.querySelector("#settleCategoryRow");
-  if (catRow) {
-    catRow.addEventListener("click", (e) => {
-      const btn = e.target.closest("[data-category]");
-      if (!btn) return;
-
-      settleFormState.category = btn.dataset.category;
-
-      catRow.querySelectorAll(".chipBtn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-    });
-  }
-
-  // 2) 통화 선택
-  const curRow = document.querySelector("#settleCurrencyRow");
-  if (curRow) {
-    curRow.addEventListener("click", (e) => {
-      const btn = e.target.closest("[data-currency]");
-      if (!btn) return;
-
-      settleFormState.currency = btn.dataset.currency;
-
-      curRow.querySelectorAll(".chipBtn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-    });
-  }
-
-  // 3) 금액 자동 콤마
-  const elAmt = document.querySelector("#settleAmount");
-  if (elAmt) {
-    elAmt.addEventListener("input", () => {
-      const digits = String(elAmt.value || "").replace(/[^\d]/g, "");
-      if (!digits) { elAmt.value = ""; return; }
-      elAmt.value = Number(digits).toLocaleString("ko-KR");
-    });
-  }
-
-  // 4) 등록 버튼
-  const btn = document.querySelector("#btnAddExpense");
-  if (btn) btn.onclick = () => submitExpense_();
-}
-
+function bindSettleForm_() 
 async function submitExpense_() {
   const msg = document.querySelector("#settleFormMsg");
-  const setMsg = (t) => { if (msg) msg.textContent = t || ""; };
-
-  const payer = document.querySelector("#settlePayer")?.value || "";
-  const amtStr = document.querySelector("#settleAmount")?.value || "";
-  const amount = Number(String(amtStr).replace(/[^\d]/g, ""));
-
-  const category = settleFormState.category;
-  const currency = settleFormState.currency || "KRW";
-
-  if (!category) return setMsg("카테고리를 선택해줘.");
-  if (!amount || amount <= 0) return setMsg("금액을 입력해줘.");
-  if (!payer) return setMsg("결제자를 선택해줘.");
-
-  setMsg("등록 중...");
-
-  const payload = {
-    action: "add_expense",
-    date: new Date().toISOString().slice(0, 10),
-    day: "",
-    title: category,
-    category,
-    paid_by: payer,
-    amount,
-    currency,
-    participants: "",
-    settled: false
-  };
+  const setMsg = (t) => { if (msg) msg.textContent = t; };
 
   try {
+    const category = settleFormState.category || "";
+    const currency = settleFormState.currency || "KRW";
+
+    const paidBy = String(document.querySelector("#settlePaidBy")?.value || "").trim();
+    const title = String(document.querySelector("#settleTitle")?.value || "").trim();
+
+    const rawAmt = String(document.querySelector("#settleAmount")?.value || "");
+    const digits = rawAmt.replace(/[^\d]/g, "");
+    const amount = Number(digits);
+
+    // participants: 체크된 사람만, 없으면 빈 배열(→ 서버에서 전원 N빵 규칙 적용하거나, 여기서 PEOPLE 넣어도 됨)
+    const checked = Array.from(document.querySelectorAll(".settlePart:checked")).map(x => x.value);
+    const participants = checked; // 빈 배열이면 "전원 N빵"으로 처리할 계획
+
+    if (!category) throw new Error("카테고리를 선택해 주세요.");
+    if (!paidBy) throw new Error("결제자를 선택해 주세요.");
+    if (!(amount > 0)) throw new Error("금액을 입력해 주세요.");
+
+    setMsg("등록 중...");
+
+    const payload = {
+      action: "add_expense",
+      date: new Date().toISOString().slice(0,10), // YYYY-MM-DD
+      day: "", // day는 안 쓰기로 했으니 빈 값
+      title: title || category,
+      category,
+      paid_by: paidBy,
+      amount,
+      currency,
+      participants // []면 서버에서 전원 N빵 처리하도록
+    };
+
     const res = await apiPost(payload);
     if (!res || res.ok !== true) throw new Error(res?.error || "등록 실패");
 
-    setMsg("등록 완료");
+    setMsg("등록 완료 ✅");
+    // 입력값 일부 초기화
+    document.querySelector("#settleAmount").value = "";
+    document.querySelector("#settleTitle").value = "";
+    document.querySelectorAll(".settlePart").forEach(cb => cb.checked = false);
+
+    // 정산 다시 불러오기
     await renderSettle();
+
   } catch (e) {
     setMsg(String(e.message || e));
   }
 }
-
-// ===== settle form logic (붙여넣기 끝) =====
-
