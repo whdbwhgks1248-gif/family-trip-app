@@ -96,26 +96,27 @@ const scheduleData = {
     },
     {
       time: "08:00 - 09:30",
-      title: "난바역 > 우메다역 > JR 교토역 (8:56 신쾌속)",
+      title: "난바역 → JR 교토역",
       mapUrl: "https://www.jorudan.co.jp/time/to/%E4%BA%AC%E9%83%BD_%E5%A4%A7%E9%98%AA/?Dym=202602&Ddd=18&r=%EF%BC%AA%EF%BC%B2%E4%BA%AC%E9%83%BD%E7%B7%9A",
-      note: "• <a href=\"https://www.jorudan.co.jp/time/to/%E4%BA%AC%E9%83%BD_%E5%A4%A7%E9%98%AA/?Dym=202602&Ddd=18&r=%EF%BC%AA%EF%BC%B2%E4%BA%AC%E9%83%BD%E7%B7%9A\" target=\"_blank\">신쾌속 시간표</a>\n• JR 신쾌속 소요시간 : 약 30분"
+      note: "•신쾌속 08:56편 출발\n• JR 신쾌속 소요시간 : 약 30분\n• <a href=\"https://www.jorudan.co.jp/time/to/%E4%BA%AC%E9%83%BD_%E5%A4%A7%E9%98%AA/?Dym=202602&Ddd=18&r=%EF%BC%AA%EF%BC%B2%E4%BA%AC%E9%83%BD%E7%B7%9A\" target=\"_blank\">신쾌속 시간표</a>"
     },
     {
       time: "09:30 - 10:00",
-      title: "체크인 후 짐 맡기기", 
+      title: "호텔 체크인", 
       mapUrl: "https://maps.app.goo.gl/5G3xC3bxrmSEVxULA"
     },
     {
       time: "10:30 - 11:00",
-      title: "호텔 → 타이쇼 하나나",
+      title: "→ 타이쇼 하나나",
       mapUrl: "https://maps.app.goo.gl/fauUxg3ejMhf2pWj7",
       note: "•예약 필요(유나)"
     },
     {
       time: "11:00 - 12:00",
       title: "타이쇼 하나나 식사 (유나 예약)",
-      note: "• <a href='https://blog.naver.com/jiyoo9697/223874041269' target='_blank'>타이쇼 하나나 정보/a>"
-    },
+      note: "• <a href='https://blog.naver.com/jiyoo9697/223874041269' target='_blank' rel='noopener noreferrer'>타이쇼 하나나 정보</a>"
+    }
+    ,
     {
       time: "12:00 - 14:30",
       title: "아라시야마",
