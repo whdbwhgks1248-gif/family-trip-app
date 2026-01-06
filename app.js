@@ -1,11 +1,11 @@
 // 1) 여기에 너의 Apps Script Web App URL 붙여넣기
-const APPS_SCRIPT_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxG9F-XybQTatgaQe7ByJuCUXEuFvmf8zHuUc89OfMG0ttfPxs8andc0qf8hX9lyIw6uw/exec";
 
 // 2) 고정 데이터
 const PEOPLE = ["영수","연실","한나","유나","아라","현아","건"];
 const CATEGORIES = ["택시","식당","기념품","카페","편의점","베이커리"];
 const DAYS = ["1","2","3","4","5"];
-const SETTLE_API_URL = "https://script.google.com/macros/s/AKfycbx9Pq5SiEnOqpq7tFZsjNgjYDKteQIyCK8HLucZORDPo1y7bOdWno1dpvemcSSbwT1w8A/exec";
+const SETTLE_API_URL = APPS_SCRIPT_URL;
 
 // --- helpers ---
 const $ = (sel)=>document.querySelector(sel);
