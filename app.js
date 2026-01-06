@@ -220,7 +220,7 @@ const scheduleData = {
       images: "images/기요미즈데라.jpeg",
       note:
       "• 청수사 입장료: ¥500, 현금만 가능\n" +
-      "청수사 근처: mochi mochi, 유바치즈, 월하미인\n\n" +
+      "• 청수사 근처: mochi mochi, 유바치즈, 월하미인\n\n" +
       "<span style='color:#ff5a7a'>[니넨자카 의미]</span>\n" +
       "• 니넨(2년)자카(고개, 언덕)\n" +
       "• 오르다 넘어지면 2년 안에 좋지 않은 일이 생긴다는 속설\n" +
