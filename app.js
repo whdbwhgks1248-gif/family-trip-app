@@ -354,7 +354,6 @@ async function renderSettle() {
     if (elTransfers) elTransfers.innerHTML = transferHtml;
 
     // ✅ 5) 하단: expenses 상세
-    const expenses = Array.isArray(data.expenses) ? data.expenses : [];
     const listHtml = expenses.length
       ? `
         <table>
