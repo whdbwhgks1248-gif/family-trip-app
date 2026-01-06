@@ -210,39 +210,37 @@ const scheduleData = {
 
     { time: "08:20 - 09:00",
      title: "🚎 > 청수사",
-    note: "• 예상 버스비 : ¥230"
+     note: "• 예상 버스비 : ¥230"
     },
 
-    {
-      time: "09:00 - 12:30",
+    { time: "09:00 - 12:30",
       title: "청수사, 산넨자카, 니넨자카",
-      desc: [
-        "청수사 근처: mochi mochi, 유바치즈, 월하미인",
-        "니넨자카: '2년 고개' 속설(넘어지면 2년 안에 좋지 않은 일이) / 본래 의미는 무사·평안·출산의 안녕 기원"
-      ].join("\n"),
-      images: [
-        // ✅ 여기는 일반 이미지(잘려도 상관 없으면 기존 카드 이미지 스타일 그대로)
-        { src: "images/day3-ninenzaka.png", alt: "니넨자카 참고" }
-      ]
+    note:
+    "청수사 근처: mochi mochi, 유바치즈, 월하미인\n\n" +
+    "<span style='color:#ff5a7a'>[니넨자카 의미]</span>\n" +
+    "• 니넨(2년)자카(고개, 언덕)\n" +
+    "• 오르다 넘어지면 2년 안에 좋지 않은 일이 생긴다는 속설\n" +
+    "• 본래 의미는 무사함, 평안, 출산의 안녕을 기원하는 길"
     },
 
-    {
-      time: "12:30 - 13:30",
+    { time: "12:30 - 13:30",
       title: "점심 京料理 花かがみ",
-      desc: [
-        "예약확정: 12:30",
-        "여행 2일 전 다시 이메일 드리기",
-        "https://www.hanakagami.co.jp/contact/"
-      ].join("\n")
+      note:
+        "• 예약확정: 12:30",
+        "• 여행 2일 전 다시 이메일 드리기",
+        "\n• <a href='https://www.hanakagami.co.jp/contact/'_blank' rel='noopener noreferrer'>京料理 花かがみ</a>
     },
 
-    { time: "13:30 - 14:00", title: "식당 → 오카페 교토" },
-    { time: "14:00 - 15:00", title: "오카페 교토" },
+    { time: "13:30 - 14:00",
+     title: "→ 오카페 교토" },
+    
+    { time: "14:00 - 15:00",
+      title: "오카페 교토" },
 
     {
       time: "15:00 - 17:00",
       title: "문구점 투어",
-      desc: [
+      note:
         "1. 웰더(베이커리)",
         "2. 휴먼 메이드 1928",
         "3. Stationery Shop tag",
@@ -252,30 +250,29 @@ const scheduleData = {
         "7. 表現社 cozyca products shop HIRAETH",
         "8. forme.(フォルム)",
         "9. 伊藤文祥堂(이토문방구)"
-      ].join("\n")
     },
 
-    { time: "17:00 - 17:30", title: "🚕 > Kaneko" },
+    { time: "17:00 - 17:30",
+     title: "🚕 → Kaneko" },
 
     {
       time: "17:30 - 19:00",
       title: "Kaneko",
-      desc: [
-        "https://www.instagram.com/kaneko_kyoto?igsh=Nmg1Y2Q0NWljZGI3&utm_source=qr"
-      ].join("\n"),
+      note: "• <a href='https://www.instagram.com/kaneko_kyoto?igsh=Nmg1Y2Q0NWljZGI3&utm_source=qr'_blank' rel='noopener noreferrer'>인스타그램</a>
       images: [
         // ✅ 여기 2개 이미지만 “안 잘리게” 옵션 추가
-        { src: "images/day3-kaneko-confirm-1.png", alt: "Kaneko 예약확정서 1", fit: "contain" },
-        { src: "images/day3-kaneko-confirm-2.png", alt: "Kaneko 예약확정서 2", fit: "contain" }
+        { src: "images/kaneko-confirm-1.png", alt: "Kaneko 예약확정서 1", fit: "contain" },
+        { src: "images/kaneko-confirm-2.png", alt: "Kaneko 예약확정서 2", fit: "contain" }
       ]
     },
 
-    { time: "19:00 - 19:30", title: "🚎 > 숙소" },
+    { time: "19:00 - 19:30",
+     title: "🚎 > 숙소" },
 
     {
       time: "20:00 -",
       title: "센토 Hinode-yu",
-      desc: "https://blog.naver.com/ohihelloj/223247044183"
+      note: "• <a href='https://blog.naver.com/ohihelloj/223247044183'_blank' rel='noopener noreferrer'>센토 후기</a>
     }
   ]
 },
