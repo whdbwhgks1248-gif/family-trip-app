@@ -327,13 +327,11 @@ async function renderSettle() {
 
     // fx가 없어도 터지지 않게
     const fx = data.fx || {};
-    const transfers = data.transfers || [];
-    const expenses  = data.expenses || [];
-
     if (elStatus) elStatus.textContent = "불러오기 완료";
 
     // ✅ 4) 상단: transfers
     const transfers = Array.isArray(data.transfers) ? data.transfers : [];
+    const expenses  = Array.isArray(data.expenses)  ? data.expenses  : [];
     const transferHtml = transfers.length
       ? `
         <table>
