@@ -38,6 +38,10 @@ function setActiveTab(name){
   // ✅ 일정 탭에서는 숨김
   const meCard = document.querySelector("#meCard");
   if (meCard) meCard.style.display = (name === "schedule") ? "none" : "";
+
+  if (name === "schedule") renderSchedule();
+  if (name === "packing")  renderPacking();
+  if (name === "settle")   renderSettle();
 }
 
 
