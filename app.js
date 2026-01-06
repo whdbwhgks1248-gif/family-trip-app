@@ -279,7 +279,6 @@ async function renderSettle() {
   console.log("[renderSettle] called");
 
   // ✅ 1) 기본 UI(헤더/새로고침 버튼/컨테이너) 먼저 고정 렌더
-  //    이후에는 아래 컨테이너들만 업데이트해서 버튼이 사라지지 않게 함
   root.innerHTML = `
     <div class="card">
       <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
@@ -301,7 +300,7 @@ async function renderSettle() {
     </div>
   `;
 
-  // ✅ 버튼 이벤트는 "기본 UI 렌더 직후"에 연결
+  // ✅ 2) 버튼 이벤트는 렌더 직후 연결
   const btn = $("#btnRefreshSettle");
   if (btn) btn.onclick = () => renderSettle();
 
@@ -309,13 +308,19 @@ async function renderSettle() {
   const elTransfers = $("#settleTransfers");
   const elDetails = $("#settleDetails");
 
+  // ✅ 3) (선택) 지출추가 폼이 있다면 이벤트 바인딩
+  // - 아직 bindSettleForm_ 함수가 없을 수도 있으니 방어
+  if (typeof bindSettleForm_ === "function") {
+    try { bindSettleForm_(); } catch (e) { console.warn("[bindSettleForm_] failed:", e); }
+  }
+
   try {
-    // ✅ 2) API URL 미정의 방어 (이거면 100% 빈 화면/오류)
+    // ✅ 4) API URL 미정의 방어
     if (typeof SETTLE_API_URL === "undefined" || !SETTLE_API_URL) {
       throw new Error("SETTLE_API_URL이 설정되어 있지 않습니다. app.js 상단 설정값을 확인하세요.");
     }
 
-    // ✅ 3) fetch
+    // ✅ 5) fetch
     const url = `${SETTLE_API_URL}?action=settle`;
     console.log("[renderSettle] fetching:", url);
 
@@ -323,18 +328,16 @@ async function renderSettle() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
     const data = await res.json();
-
-    if (!data || !data.ok) {
-      throw new Error("정산 데이터 형식이 올바르지 않습니다.");
+    if (!data || data.ok !== true) {
+      throw new Error(data && data.error ? String(data.error) : "정산 데이터 형식이 올바르지 않습니다.");
     }
 
-    // fx가 없어도 터지지 않게
-    const fx = data.fx || {};
     if (elStatus) elStatus.textContent = "불러오기 완료";
 
-    // ✅ 4) 상단: transfers
+    // ✅ 6) transfers / expenses
     const transfers = Array.isArray(data.transfers) ? data.transfers : [];
     const expenses  = Array.isArray(data.expenses)  ? data.expenses  : [];
+
     const transferHtml = transfers.length
       ? `
         <table>
@@ -356,7 +359,6 @@ async function renderSettle() {
 
     if (elTransfers) elTransfers.innerHTML = transferHtml;
 
-    // ✅ 5) 하단: expenses 상세
     const listHtml = expenses.length
       ? `
         <table>
@@ -388,7 +390,6 @@ async function renderSettle() {
 
     if (elStatus) elStatus.textContent = "불러오기 실패";
 
-    // ✅ 실패 메시지는 아래 “누가 누구에게 얼마” 영역에 보여주기
     if (elTransfers) {
       elTransfers.innerHTML = `
         <div class="hint" style="font-weight:900;">정산 불러오기 실패</div>
@@ -396,11 +397,10 @@ async function renderSettle() {
       `;
     }
 
-    // 상세 영역은 비워둠
     if (elDetails) elDetails.innerHTML = `<div class="hint">-</div>`;
   }
-bindSettleForm_();
 }
+
 
 
 function formatKrw_(n) {
@@ -524,7 +524,7 @@ function renderSettle(summary){
       <div class="hint">오늘 적용 환율(JPY→KRW): ${fx ? fx.toFixed(4) : "아직 없음 (runDailyFx 1회 실행 필요)"} </div>
     </div>
 
-    <div class="card">
+  <div class="card">
   <div style="font-size:18px; font-weight:900; margin-bottom:10px;">지출 추가</div>
 
   <div class="label">카테고리</div>
