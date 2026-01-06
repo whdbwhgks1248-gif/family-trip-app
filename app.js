@@ -5,6 +5,7 @@ const APPS_SCRIPT_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
 const PEOPLE = ["영수","연실","한나","유나","아라","현아","건"];
 const CATEGORIES = ["택시","식당","기념품","카페","편의점","베이커리"];
 const DAYS = ["1","2","3","4","5"];
+const SETTLE_API_URL = "https://script.google.com/macros/s/AKfycbyNg_XPJOIXDr9KEyAuQu7OS0tUOCGMRhxGVQnm8b-DToGvCzpT5Ef1wFOtJowHGm8PWw/exechttps://script.google.com/macros/s/AKfycbyNg_XPJOIXDr9KEyAuQu7OS0tUOCGMRhxGVQnm8b-DToGvCzpT5Ef1wFOtJowHGm8PWw/exec";
 
 // --- helpers ---
 const $ = (sel)=>document.querySelector(sel);
@@ -254,6 +255,89 @@ function renderSchedule() {
       `;
     }).join("")}
   `;
+}
+async function renderSettle() {
+  const root = document.querySelector("#viewSettle");
+  root.innerHTML = `
+    <div class="card">
+      <div style="font-size:18px;font-weight:900;">정산</div>
+      <div class="hint">EXPENSES 시트 입력 기준으로 자동 계산합니다. (settled=TRUE 항목 제외)</div>
+    </div>
+    <div class="card"><div class="hint">불러오는 중...</div></div>
+  `;
+
+  try {
+    const res = await fetch(`${SETTLE_API_URL}?mode=settle`, { cache: "no-store" });
+    const data = await res.json();
+
+    const transfersHtml = (data.transfers || []).length
+      ? `
+        <div class="card">
+          <div style="font-weight:900;margin-bottom:10px;">누가 누구에게 보내야 해?</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            ${(data.transfers || []).map(t => `
+              <div style="display:flex;justify-content:space-between;gap:10px;">
+                <div><b>${t.from}</b> → <b>${t.to}</b></div>
+                <div style="font-weight:900;">${Number(t.amountKrw).toLocaleString()}원</div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `
+      : `
+        <div class="card">
+          <div style="font-weight:900;">정산할 내역이 없어요</div>
+          <div class="hint">EXPENSES에 금액을 입력했는지 확인해 주세요.</div>
+        </div>
+      `;
+
+    // 날짜별 상세(표)
+    const rows = data.rows || [];
+    const detailRowsHtml = rows.length
+      ? rows.map(r => `
+        <tr>
+          <td>${r.date || ""}</td>
+          <td>${r.day || ""}</td>
+          <td>${r.title || ""}</td>
+          <td>${r.category || ""}</td>
+          <td>${r.paidBy || ""}</td>
+          <td style="text-align:right;">${Number(r.amount).toLocaleString()} ${r.currency || ""}</td>
+          <td>${(r.participants || []).join(", ")}</td>
+        </tr>
+      `).join("")
+      : `<tr><td colspan="7" class="hint">내역이 없습니다.</td></tr>`;
+
+    const detailHtml = `
+      <div class="card">
+        <div style="font-weight:900;margin-bottom:10px;">상세 내역(정산 대상만)</div>
+        <table>
+          <thead>
+            <tr>
+              <th>날짜</th>
+              <th>Day</th>
+              <th>항목</th>
+              <th>분류</th>
+              <th>결제자</th>
+              <th style="text-align:right;">금액</th>
+              <th>참여자</th>
+            </tr>
+          </thead>
+          <tbody>${detailRowsHtml}</tbody>
+        </table>
+        <div class="hint" style="margin-top:10px;">사전정산/정산완료는 EXPENSES의 settled=TRUE로 제외됩니다.</div>
+      </div>
+    `;
+
+    root.innerHTML = `${transfersHtml}${detailHtml}`;
+  } catch (err) {
+    root.innerHTML = `
+      <div class="card">
+        <div style="font-weight:900;">정산 데이터를 불러오지 못했어요</div>
+        <div class="hint">Apps Script Web App URL / 권한(Anyone) / mode=settle 응답을 확인해 주세요.</div>
+      </div>
+    `;
+    console.error(err);
+  }
 }
 
 
