@@ -5,7 +5,7 @@ const APPS_SCRIPT_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
 const PEOPLE = ["영수","연실","한나","유나","아라","현아","건"];
 const CATEGORIES = ["택시","식당","기념품","카페","편의점","베이커리"];
 const DAYS = ["1","2","3","4","5"];
-const SETTLE_API_URL = "https://script.google.com/macros/s/AKfycbyNg_XPJOIXDr9KEyAuQu7OS0tUOCGMRhxGVQnm8b-DToGvCzpT5Ef1wFOtJowHGm8PWw/exechttps://script.google.com/macros/s/AKfycbyNg_XPJOIXDr9KEyAuQu7OS0tUOCGMRhxGVQnm8b-DToGvCzpT5Ef1wFOtJowHGm8PWw/exec";
+const SETTLE_API_URL = "https://script.google.com/macros/s/AKfycbyelQ0C0zD2zu393uAbPJccEAL_izPowo5bbxmHM4DJfw0KlPwde5RCRwAT6AffN92gmA/exec";
 
 // --- helpers ---
 const $ = (sel)=>document.querySelector(sel);
