@@ -217,7 +217,7 @@ const scheduleData = {
 
     { time: "09:00 - 12:30",
       title: "청수사, 산넨자카, 니넨자카",
-      images: "images/기요미즈데라.jpeg",
+      image: "images/기요미즈데라.jpeg",
       note:
       "• 청수사 입장료: ¥500, 현금만 가능\n" +
       "• 청수사 근처: mochi mochi, 유바치즈, 월하미인\n\n" +
@@ -240,14 +240,14 @@ const scheduleData = {
     
     { time: "14:00 - 15:00",
       title: "오카페 교토",
-      images: "images/Okaffe Kyoto.jpeg"    
+      image: "images/Okaffe Kyoto.jpeg"    
     },
 
     {
       time: "15:00 - 17:00",
       title: "문구점 투어",
       mapUrl: "https://maps.app.goo.gl/FeJypkoKBEw5My9j8",
-      images: "images/SCR-20260107-bnzl.jpeg",
+      image: "images/SCR-20260107-bnzl.jpeg",
       note:
         "① 웰더(베이커리)\n" +
         "② 휴먼 메이드 1928\n" +
@@ -263,13 +263,13 @@ const scheduleData = {
     { time: "17:00 - 17:30",
      title: "🚕 → Kaneko",
      mapUrl: "https://maps.app.goo.gl/pFwxx3v1cmQZxEAG9",
+     image: "images/Kaneko.jpeg",
      note: "• 예상 택시비: 10,000원"
     },
 
     {
       time: "17:30 - 19:00",
       title: "Kaneko",
-      images: "images/Kaneko.jpeg",
       note: "• <a href='https://www.instagram.com/kaneko_kyoto?igsh=Nmg1Y2Q0NWljZGI3&utm_source=qr'_blank' rel='noopener noreferrer'>인스타그램</a>",
       images: [
         // ✅ 여기 2개 이미지만 “안 잘리게” 옵션 추가
@@ -287,7 +287,7 @@ const scheduleData = {
       time: "20:00 -",
       title: "센토 Hinode-yu",
       mapUrl: "https://maps.app.goo.gl/BfUAtyudWqumkp4dA",
-      images: "images/Hinode-yu.jpeg",
+      image: "images/Hinode-yu.jpeg",
       note: "• 입장료: ¥550\n• <a href='https://blog.naver.com/ohihelloj/223247044183'_blank' rel='noopener noreferrer'>센토 후기</a>"
     }
   ]
