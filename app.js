@@ -96,13 +96,14 @@ const scheduleData = {
     },
     {
       time: "08:00 - 09:30",
-      title: "난바역 → JR 교토역",
+      title: "난바역 → 교토역",
       mapUrl: "https://www.jorudan.co.jp/time/to/%E4%BA%AC%E9%83%BD_%E5%A4%A7%E9%98%AA/?Dym=202602&Ddd=18&r=%EF%BC%AA%EF%BC%B2%E4%BA%AC%E9%83%BD%E7%B7%9A",
       note: "•신쾌속 08:56편 출발\n• JR 신쾌속 소요시간 : 약 30분\n• <a href=\"https://www.jorudan.co.jp/time/to/%E4%BA%AC%E9%83%BD_%E5%A4%A7%E9%98%AA/?Dym=202602&Ddd=18&r=%EF%BC%AA%EF%BC%B2%E4%BA%AC%E9%83%BD%E7%B7%9A\" target=\"_blank\">신쾌속 시간표</a>"
     },
     {
       time: "09:30 - 10:00",
       title: "호텔 체크인", 
+      image: "images/Rinn Kujofujinoki Central.png",
       mapUrl: "https://maps.app.goo.gl/5G3xC3bxrmSEVxULA"
     },
     {
@@ -121,38 +122,38 @@ const scheduleData = {
       time: "12:00 - 14:30",
       title: "아라시야마",
       note:
-        "1) 아라시야마 치쿠린\n" +
-        "2) 아라시야마 대나무길\n" +
-        "3) 텐류지\n" +
-        "4) 아라비카 교토 아라시야마점\n" +
-        "5) 도게츠 교\n" +
-        "6) 미피 사쿠라 키친 아라시야마점\n" +
-        "7) 리락쿠마 카페 교토 아라시야마점\n" +
-        "8) 코토이모 본점(당고)"
+        "① 아라시야마 치쿠린\n" +
+        "② 아라시야마 대나무길\n" +
+        "③ 텐류지\n" +
+        "④ 아라비카 교토 아라시야마점\n" +
+        "⑤ 도게츠 교\n" +
+        "⑥ 미피 사쿠라 키친 아라시야마점\n" +
+        "⑦ 리락쿠마 카페 교토 아라시야마점\n" +
+        "⑧ 코토이모 본점(당고)"
     },
     {
       time: "14:30 - 15:00",
-      title: "🚕 니시키 시장 이동",
+      title: "🚕 니시키 시장",
       mapUrl: "https://maps.app.goo.gl/QnAwAYi3LdAShYQW6",
-      note: "택시 도착 지점은 산리오 갤러리 교토로 찍기"
+      note: "• 택시 도착 지점은 산리오 갤러리 교토로 찍기"
     },
     {
       time: "15:00 - 17:00",
       title: "니시키 시장 근처",
       note:
         "[SOU・SOU]\n" +
-        "- SOU・SOU 타비\n" +
-        "- SOUSOU 이세모멘\n" +
-        "- SOU・SOU kikoromo\n" +
-        "- SOU・SOU hotei\n" +
-        "- SOU・SOU Okurimono\n" +
-        "- SOU・SOU Yousou.\n" +
-        "- SOU・SOU deportare\n\n" +
+        "• SOU・SOU 타비\n" +
+        "• SOUSOU 이세모멘\n" +
+        "• SOU・SOU kikoromo\n" +
+        "• SOU・SOU hotei\n" +
+        "• SOU・SOU Okurimono\n" +
+        "• SOU・SOU Yousou.\n" +
+        "• SOU・SOU deportare\n\n" +
         "[키디랜드]\n" +
-        "- 키디랜드 교토시조가와라마치점\n\n" +
-        "[니시키시장 메모]\n" +
-        "- 시장 내 ‘먹으면서 걷기’ 금지\n" +
-        "- 구입한 가게 앞/가게 안에서 시식 가능"
+        "• 키디랜드 교토시조가와라마치점\n\n" +
+        "<span class='highlight'>[니시키시장 유의사항]</span>\n" +
+        "• 시장 내 ‘먹으면서 걷기’ 금지\n" +
+        "• 구입한 가게 앞/가게 안에서 시식 가능"
     },
     {
       time: "17:00 - 18:30",
