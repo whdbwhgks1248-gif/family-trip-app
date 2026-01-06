@@ -1,5 +1,5 @@
 // 1) 여기에 너의 Apps Script Web App URL 붙여넣기
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbywNfoaxqZ0GiajfX6o1P8PfIyTgLSBmrowzhQ5LgxCgNcPVI1DVfOpBy8gN3BXWZKVkg/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxFQFBoTC7OGqcEZF7r-CC6p6eqCz057V_SbOCF_sJSH31U9kj_VS-53f-Tt6txEUWZCw/exec";
 
 // 2) 고정 데이터
 const PEOPLE = ["영수","연실","한나","유나","아라","현아","건"];
