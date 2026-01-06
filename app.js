@@ -540,8 +540,8 @@ async function loadPacking(){
 
 // --- SETTLE ---
 function renderSettle(summary){
-  const root = $("#viewSettle");
-  const fx = summary.fx || 0;
+const root = $("#viewSettle");
+const fx = (summary && summary.fx) ? summary.fx : 0;
 
   root.innerHTML = `
     <div class="card">
