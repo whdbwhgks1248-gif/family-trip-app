@@ -258,21 +258,15 @@
   <header>오사카&교토 여행</header>
 
   <div class="tabs">
-    <button class="tab active" data-tab="schedule" type="button">일정</button>
-    <button class="tab" data-tab="packing" type="button">준비물</button>
-    <button class="tab" data-tab="settle" type="button">정산</button>
+   <button class="tab" data-tab="schedule">일정</button>
+<button class="tab" data-tab="rules">여행 규칙</button>
+<button class="tab" data-tab="souvenir">기념품 리스트</button>
   </div>
 
-  <div class="wrap">
-    <div class="card" id="meCard">
-      <label>내 이름(선택)</label>
-      <select id="meSelect"></select>
-      <div class="hint">정산/개인 준비물 입력에 사용됩니다.</div>
-    </div>
+<div id="viewSchedule"></div>
+<div id="viewRules" style="display:none;"></div>
+<div id="viewSouvenir" style="display:none;"></div>
 
-    <div id="viewSchedule"></div>
-    <div id="viewPacking" style="display:none;"></div>
-    <div id="viewSettle" style="display:none;"></div>
   </div>
 
   <script src="./app.js"></script>
