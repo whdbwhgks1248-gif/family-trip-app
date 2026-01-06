@@ -5,7 +5,7 @@ const APPS_SCRIPT_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
 const PEOPLE = ["영수","연실","한나","유나","아라","현아","건"];
 const CATEGORIES = ["택시","식당","기념품","카페","편의점","베이커리"];
 const DAYS = ["1","2","3","4","5"];
-const SETTLE_API_URL = "https://script.google.com/macros/s/AKfycbyelQ0C0zD2zu393uAbPJccEAL_izPowo5bbxmHM4DJfw0KlPwde5RCRwAT6AffN92gmA/exec";
+const SETTLE_API_URL = "https://script.google.com/macros/s/AKfycbzR2pqCIzSg8qRvGIYBYxehrXPc2MEYMMa-BO3AWsWFm_ma6KDdGOeLPS6syzUg8bBb5A/exec";
 
 // --- helpers ---
 const $ = (sel)=>document.querySelector(sel);
@@ -320,9 +320,15 @@ async function renderSettle() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
     const data = await res.json();
-    console.log("[renderSettle] response:", data);
 
-    if (!data || !data.ok) throw new Error((data && data.error) ? data.error : "API error");
+    if (!data || !data.ok) {
+      throw new Error("정산 데이터 형식이 올바르지 않습니다.");
+    }
+
+    // fx가 없어도 터지지 않게
+    const fx = data.fx || {};
+    const transfers = data.transfers || [];
+    const expenses  = data.expenses || [];
 
     if (elStatus) elStatus.textContent = "불러오기 완료";
 
