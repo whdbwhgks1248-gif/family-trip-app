@@ -246,7 +246,7 @@ const scheduleData = {
       time: "15:00 - 17:00",
       title: "문구점 투어",
       mapUrl: "https://maps.app.goo.gl/FeJypkoKBEw5My9j8",
-      images: "images/SCR-20260107-bnzl.jpeg"
+      images: "images/SCR-20260107-bnzl.jpeg",
       note:
         "① 웰더(베이커리)\n" +
         "② 휴먼 메이드 1928\n" +
