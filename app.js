@@ -317,17 +317,37 @@ function renderSchedule() {
                 ? `<div class="noteBox">${item.note.replace(/\n/g, "<br>")}</div>`
                 : "";
 
-              const imageHtml = item.image
-                ? `
-                  <div class="media">
-                    <img class="mediaImg"
-                      src="${item.image}"
-                      alt="${item.title || ""}"
-                      loading="lazy"
-                    />
-                  </div>
-                `
-                : "";
+              // ✅ 이미지 렌더: item.image(단일) + item.images(복수) 둘 다 지원
+const imageHtml = (() => {
+  // 1) 복수 이미지 (images 배열)
+  if (Array.isArray(item.images) && item.images.length) {
+    return item.images.map(img => {
+      const fit = String(img.fit || "").toLowerCase();
+      const mediaClass = fit === "contain" ? "media media--contain" : "media";
+      const imgClass   = fit === "contain" ? "mediaImg mediaImg--contain" : "mediaImg";
+      return `
+        <div class="${mediaClass}">
+          <img class="${imgClass}"
+               src="${img.src}"
+               alt="${img.alt || item.title || ""}"
+               loading="lazy">
+        </div>
+      `;
+    }).join("");
+  }
+
+  // 2) 단일 이미지 (image 문자열)
+  if (item.image) {
+    return `
+      <div class="media">
+        <img class="mediaImg" src="${item.image}" alt="${item.title || ""}" loading="lazy">
+      </div>
+    `;
+  }
+
+  return "";
+})();
+
 
               const mapHtml = item.mapUrl
                 ? `
