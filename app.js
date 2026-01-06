@@ -171,7 +171,7 @@ const scheduleData = {
       note: "다이소 21시\n마켓 가든 KOHYO 이온몰 KYOTO점 22시"
     }
   ]
-}
+},
     { label: "Day 3", items: [] },
     { label: "Day 4", items: [] },
     { label: "Day 5", items: [] }
