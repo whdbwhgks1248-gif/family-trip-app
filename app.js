@@ -206,7 +206,8 @@ const scheduleData = {
    {
   label: "Day 3",
   items: [
-    { time: "08:20", title: "준비 & 아침식사" },
+    { time: "08:20",
+     title: "준비 & 아침식사" },
 
     { time: "08:20 - 09:00",
      title: "🚎 > 청수사",
@@ -225,10 +226,7 @@ const scheduleData = {
 
     { time: "12:30 - 13:30",
       title: "점심 京料理 花かがみ",
-      note:
-        "• 예약확정: 12:30",
-        "• 여행 2일 전 다시 이메일 드리기",
-        "\n• <a href='https://www.hanakagami.co.jp/contact/'_blank' rel='noopener noreferrer'>京料理 花かがみ</a>
+      note: "• 예약확정: 12:30\n• 여행 2일 전 다시 이메일 드리기\n• <a href='https://www.hanakagami.co.jp/contact/'_blank' rel='noopener noreferrer'>京料理 花かがみ</a>"
     },
 
     { time: "13:30 - 14:00",
