@@ -219,11 +219,12 @@ const scheduleData = {
       title: "청수사, 산넨자카, 니넨자카",
       images: "images/기요미즈데라.jpeg",
       note:
-    "청수사 근처: mochi mochi, 유바치즈, 월하미인\n\n" +
-    "<span style='color:#ff5a7a'>[니넨자카 의미]</span>\n" +
-    "• 니넨(2년)자카(고개, 언덕)\n" +
-    "• 오르다 넘어지면 2년 안에 좋지 않은 일이 생긴다는 속설\n" +
-    "• 본래 의미는 무사함, 평안, 출산의 안녕을 기원하는 길"
+      "• 청수사 입장료: ¥500, 현금만 가능\n" +
+      "청수사 근처: mochi mochi, 유바치즈, 월하미인\n\n" +
+      "<span style='color:#ff5a7a'>[니넨자카 의미]</span>\n" +
+      "• 니넨(2년)자카(고개, 언덕)\n" +
+      "• 오르다 넘어지면 2년 안에 좋지 않은 일이 생긴다는 속설\n" +
+      "• 본래 의미는 무사함, 평안, 출산의 안녕을 기원하는 길"
     },
 
     { time: "12:30 - 13:30",
@@ -261,7 +262,8 @@ const scheduleData = {
 
     { time: "17:00 - 17:30",
      title: "🚕 → Kaneko",
-     mapUrl: "https://maps.app.goo.gl/pFwxx3v1cmQZxEAG9"
+     mapUrl: "https://maps.app.goo.gl/pFwxx3v1cmQZxEAG9",
+     note: "• 예상 택시비: 10,000원"
     },
 
     {
@@ -277,14 +279,16 @@ const scheduleData = {
     },
 
     { time: "19:00 - 19:30",
-     title: "🚎 > 숙소" },
+     title: "🚎 > 숙소",
+     note: "• 예상 버스비: ¥230"
+    },
 
     {
       time: "20:00 -",
       title: "센토 Hinode-yu",
       mapUrl: "https://maps.app.goo.gl/BfUAtyudWqumkp4dA",
       images: "images/Hinode-yu.jpeg",
-      note: "• <a href='https://blog.naver.com/ohihelloj/223247044183'_blank' rel='noopener noreferrer'>센토 후기</a>"
+      note: "• 입장료: ¥550\n• <a href='https://blog.naver.com/ohihelloj/223247044183'_blank' rel='noopener noreferrer'>센토 후기</a>"
     }
   ]
 },
