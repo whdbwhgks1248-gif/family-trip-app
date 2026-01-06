@@ -399,6 +399,7 @@ async function renderSettle() {
     // 상세 영역은 비워둠
     if (elDetails) elDetails.innerHTML = `<div class="hint">-</div>`;
   }
+bindSettleForm_();
 }
 
 
@@ -524,7 +525,35 @@ function renderSettle(summary){
     </div>
 
     <div class="card">
-      <div style="font-size:18px;font-weight:900;">지출 추가</div>
+  <div style="font-size:18px; font-weight:900; margin-bottom:10px;">지출 추가</div>
+
+  <div class="label">카테고리</div>
+  <div class="chipRow" id="settleCategoryRow">
+    ${CATEGORIES.map(c => `
+      <button type="button" class="chipBtn" data-category="${c}">${c}</button>
+    `).join("")}
+  </div>
+
+  <div class="label" style="margin-top:12px;">금액</div>
+  <input id="settleAmount" class="input" inputmode="numeric" placeholder="예: 26,705" />
+
+  <div class="label" style="margin-top:12px;">통화</div>
+  <div class="chipRow" id="settleCurrencyRow">
+    <button type="button" class="chipBtn" data-currency="KRW">KRW</button>
+    <button type="button" class="chipBtn" data-currency="JPY">JPY</button>
+  </div>
+
+  <div class="label" style="margin-top:12px;">결제자</div>
+  <select id="settlePayer" class="input">
+    ${PEOPLE.map(p=>`<option value="${p}">${p}</option>`).join("")}
+  </select>
+
+  <div style="margin-top:14px; display:flex; gap:10px; align-items:center;">
+    <button id="btnAddExpense" class="btnPrimary" type="button">등록</button>
+    <div id="settleFormMsg" class="hint"></div>
+  </div>
+</div>
+
 
       <label>카테고리</label>
       <div class="pill" id="catPill"></div>
@@ -697,4 +726,99 @@ document.querySelectorAll(".tab").forEach((btn) => {
 
 // 최초 1회 기본 탭 렌더
 showTab("schedule");
+
+// ===== settle form logic (붙여넣기 시작) =====
+
+// 정산 입력 폼 상태
+const settleFormState = {
+  category: "",
+  currency: "",
+};
+
+function bindSettleForm_() {
+  // 1) 카테고리 선택
+  const catRow = document.querySelector("#settleCategoryRow");
+  if (catRow) {
+    catRow.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-category]");
+      if (!btn) return;
+
+      settleFormState.category = btn.dataset.category;
+
+      catRow.querySelectorAll(".chipBtn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    });
+  }
+
+  // 2) 통화 선택
+  const curRow = document.querySelector("#settleCurrencyRow");
+  if (curRow) {
+    curRow.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-currency]");
+      if (!btn) return;
+
+      settleFormState.currency = btn.dataset.currency;
+
+      curRow.querySelectorAll(".chipBtn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    });
+  }
+
+  // 3) 금액 자동 콤마
+  const elAmt = document.querySelector("#settleAmount");
+  if (elAmt) {
+    elAmt.addEventListener("input", () => {
+      const digits = String(elAmt.value || "").replace(/[^\d]/g, "");
+      if (!digits) { elAmt.value = ""; return; }
+      elAmt.value = Number(digits).toLocaleString("ko-KR");
+    });
+  }
+
+  // 4) 등록 버튼
+  const btn = document.querySelector("#btnAddExpense");
+  if (btn) btn.onclick = () => submitExpense_();
+}
+
+async function submitExpense_() {
+  const msg = document.querySelector("#settleFormMsg");
+  const setMsg = (t) => { if (msg) msg.textContent = t || ""; };
+
+  const payer = document.querySelector("#settlePayer")?.value || "";
+  const amtStr = document.querySelector("#settleAmount")?.value || "";
+  const amount = Number(String(amtStr).replace(/[^\d]/g, ""));
+
+  const category = settleFormState.category;
+  const currency = settleFormState.currency || "KRW";
+
+  if (!category) return setMsg("카테고리를 선택해줘.");
+  if (!amount || amount <= 0) return setMsg("금액을 입력해줘.");
+  if (!payer) return setMsg("결제자를 선택해줘.");
+
+  setMsg("등록 중...");
+
+  const payload = {
+    action: "add_expense",
+    date: new Date().toISOString().slice(0, 10),
+    day: "",
+    title: category,
+    category,
+    paid_by: payer,
+    amount,
+    currency,
+    participants: "",
+    settled: false
+  };
+
+  try {
+    const res = await apiPost(payload);
+    if (!res || res.ok !== true) throw new Error(res?.error || "등록 실패");
+
+    setMsg("등록 완료");
+    await renderSettle();
+  } catch (e) {
+    setMsg(String(e.message || e));
+  }
+}
+
+// ===== settle form logic (붙여넣기 끝) =====
 
