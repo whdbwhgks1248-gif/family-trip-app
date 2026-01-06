@@ -98,8 +98,7 @@ const scheduleData = {
       time: "08:00 - 09:30",
       title: "난바역 > 우메다역 > JR 교토역 (8:56 신쾌속)",
       mapUrl: "https://www.jorudan.co.jp/time/to/%E4%BA%AC%E9%83%BD_%E5%A4%A7%E9%98%AA/?Dym=202602&Ddd=18&r=%EF%BC%AA%EF%BC%B2%E4%BA%AC%E9%83%BD%E7%B7%9A",
-      note: "• <a href='https://www.jorudan.co.jp/time/to/%E4%BA%AC%E9%83%BD_%E5%A4%A7%E9%98%AA/?Dym=202602&Ddd=18&r=%EF%BC%AA%EF%BC%B2%E4%BA%AC%E9%83%BD%E7%B7%9A' target='_blank'>신쾌속 시간표/a>
-        \n•JR 신쾌속 소요시간 : 약 30분"
+      note: "• <a href=\"https://www.jorudan.co.jp/time/to/%E4%BA%AC%E9%83%BD_%E5%A4%A7%E9%98%AA/?Dym=202602&Ddd=18&r=%EF%BC%AA%EF%BC%B2%E4%BA%AC%E9%83%BD%E7%B7%9A\" target=\"_blank\">신쾌속 시간표</a>\n• JR 신쾌속 소요시간 : 약 30분"
     },
     {
       time: "09:30 - 10:00",
