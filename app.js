@@ -424,6 +424,8 @@ async function renderSettle() {
     if (elTransfers) elTransfers.innerHTML = `<div class="hint">${escapeHtml_(String(err.message || err))}</div>`;
     if (elDetails) elDetails.innerHTML = `<div class="hint">-</div>`;
   }
+   // ✅ 무조건 마지막에 호출(성공/실패 상관없이)
+  bindSettleForm_();
 }
 
 
@@ -766,51 +768,64 @@ var settleFormState = (typeof settleFormState !== "undefined" && settleFormState
 
 // ✅ renderSettle()로 화면을 다시 그릴 때마다 bind가 여러 번 붙는 걸 방지
 function bindSettleForm_() {
-  // 0) 필요한 엘리먼트가 있는지 먼저 확인
+  // 이미 바인딩 했으면 중복 바인딩 방지
+  const btn = document.querySelector("#btnAddExpense");
+  if (!btn) return;
+
+  // ✅ 바인딩 여부 표시(너가 콘솔로 확인하는 그 값)
+  if (btn.dataset.bound === "1") return;
+  btn.dataset.bound = "1";
+
+  // ---- (1) 카테고리 칩 클릭 ----
   const catRow = document.querySelector("#settleCategoryRow");
+  if (catRow) {
+    catRow.addEventListener("click", (e) => {
+      const chip = e.target.closest("[data-category]");
+      if (!chip) return;
+
+      settleFormState.category = chip.dataset.category || "";
+
+      catRow.querySelectorAll("[data-category]").forEach(x => x.classList.remove("active"));
+      chip.classList.add("active");
+    });
+  }
+
+  // ---- (2) 통화 칩 클릭 ----
   const curRow = document.querySelector("#settleCurrencyRow");
-  const elAmt  = document.querySelector("#settleAmount");
-  const btnAdd = document.querySelector("#btnAddExpense");
+  if (curRow) {
+    curRow.addEventListener("click", (e) => {
+      const chip = e.target.closest("[data-currency]");
+      if (!chip) return;
 
-  // 이 4개 중 하나라도 없으면 “클릭 안됨”이 정상이라서, 조용히 종료
-  if (!catRow || !curRow || !elAmt || !btnAdd) return;
+      settleFormState.currency = chip.dataset.currency || "KRW";
 
-  // 이미 바인딩했으면 중복 바인딩 방지
-  if (btnAdd.dataset.bound === "1") return;
-  btnAdd.dataset.bound = "1";
+      curRow.querySelectorAll("[data-currency]").forEach(x => x.classList.remove("active"));
+      chip.classList.add("active");
+    });
+  }
 
-  // 1) 카테고리 선택
-  catRow.addEventListener("click", (e) => {
-    const btn = e.target.closest("[data-category]");
-    if (!btn) return;
+  // ---- (3) 금액 콤마 ----
+  const elAmt = document.querySelector("#settleAmount");
+  if (elAmt) {
+    elAmt.addEventListener("input", () => {
+      const digits = String(elAmt.value || "").replace(/[^\d]/g, "");
+      elAmt.value = digits ? Number(digits).toLocaleString("ko-KR") : "";
+    });
+  }
 
-    settleFormState.category = btn.dataset.category;
-
-    catRow.querySelectorAll(".chipBtn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
+  // ---- (4) 등록 버튼 클릭 ----
+  btn.addEventListener("click", async () => {
+    try {
+      btn.disabled = true;
+      await submitExpense_();
+    } finally {
+      btn.disabled = false;
+    }
   });
 
-  // 2) 통화 선택
-  curRow.addEventListener("click", (e) => {
-    const btn = e.target.closest("[data-currency]");
-    if (!btn) return;
-
-    settleFormState.currency = btn.dataset.currency;
-
-    curRow.querySelectorAll(".chipBtn").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-  });
-
-  // 3) 금액 자동 콤마
-  elAmt.addEventListener("input", () => {
-    const digits = String(elAmt.value || "").replace(/[^\d]/g, "");
-    if (!digits) { elAmt.value = ""; return; }
-    elAmt.value = Number(digits).toLocaleString("ko-KR");
-  });
-
-  // 4) 등록 버튼
-  btnAdd.onclick = () => submitExpense_();
+  console.log("[bindSettleForm_] bound ✅");
 }
+
 
 async function submitExpense_() {
   const msg = document.querySelector("#settleFormMsg");
