@@ -313,61 +313,72 @@ const scheduleData = {
     {
       time: "09:15 - 10:15",
       title: "Aoitori",
-      image: ""
+      image: "images/Aoitori.png"
     },
 
     {
       time: "10:15 - 10:45",
-      title: "🚇 > 후시미 이나리 신사",
-      mapUrl: "https://maps.app.goo.gl/HNYpFVtRGoeUhbm36"
+      title: "🚇 > 후시미 이나리",
+      mapUrl: "https://maps.app.goo.gl/HNYpFVtRGoeUhbm36",
+      note: "• 예상 교통비: ¥180"
     },
 
     {
       time: "10:45 - 12:00",
       title: "후시미 이나리 신사",
+      image: "images/SCR-20260107-twiz.jpeg",
       note:
         "• 사업 번창, 농업의 풍요를 기원하는 이나리 신을 모시는 신사\n" +
         "• 여우 동상 = 신의 심부름꾼(여러 버전이 포인트)\n" +
-        "• 토리이(일주문)를 세우면 사업이 번창한다는 의미로 개인/기업 후원으로 수가 늘어남\n" +
+        "• 토리이를 세우면 사업이 번창한다는 의미로 개인/기업 후원으로 수가 늘어남\n" +
         "• 빛의 토리이는 초입만 봐도 OK\n\n" +
         "【근처 들를 곳】\n" +
-        "①  치이카와 잡화점\n" +
+        "① 치이카와 잡화점\n" +
         "② Inari Futaba (콩떡)\n" +
         "③ 호교쿠도 (여우 전병)"
     },
 
     {
       time: "12:00 - 12:30",
-      title: "짐찾기"
+      title: "> 숙소",
+      note: "• 예상 교통비: ¥150"
     },
 
     {
       time: "12:30 - 13:00",
-      title: "발권 및 플랫폼으로 이동"
+      title: "발권 및 플랫폼으로 이동",
+      note: "•예상 교통비: ¥820"
     },
 
     {
       time: "13:00 - 14:00",
-      title: "> 오사카 숙소"
+      title: "> 오사카 숙소",
+      mapUrl: "https://maps.app.goo.gl/bz95UscBXsHiY78V8",
+      image: "images/kokohotel.png"
     },
 
     {
       time: "14:00 - 15:00",
       title: "스시 사카바 사시스 난바",
-      mapUrl: "https://maps.app.goo.gl/rXZAwUV6HSBmrd9z8"
+      mapUrl: "https://maps.app.goo.gl/rXZAwUV6HSBmrd9z8",
+      image: "images/SCR-20260107-tyyx.jpeg"
     },
 
     {
       time: "15:00 - 17:00",
       title: "근처 구경",
+      mapUrl: "https://maps.app.goo.gl/pBr3M4cSHDZUjmQM8",
+      image: "images/SCR-20260107-tzrd.jpeg",
       note: "① 구로몬 시장\n" +
             "② 센니치마에 도구야스지 상점가\n" +
-            "③ 도톤보리\n"
+            "③ 도톤보리\n" +
+            "-멜론브레드\n"
     },
 
     {
       time: "17:00 - 18:40",
       title: "신사이바시스지 상점가",
+      image: "images/SCR-20260107-uadh.jpeg",
       note:
         "① GIGO Osaka Dotonbori Main\n" +
         "② 러쉬 신사이바시점\n" +
@@ -382,15 +393,15 @@ const scheduleData = {
 
     {
       time: "18:40 - 19:00",
-      title: "🚕 모미지"
+      title: "🚕 모미지",
+      mapUrl: "https://maps.app.goo.gl/2wtQYR4rCDCtaJ3B9"
     },
 
     {
       time: "19:00 - 20:30",
-      title: "오꼬노미야끼 모미지 (19:15 예약)",
+      title: "오꼬노미야끼 모미지",
+      image: "images/momiji-reserve.png",
       note: "• 예약 시간: 19:15"
-      // 나중에 캡처 업로드하면 아래처럼 추가:
-      // image: "./images/momiji-reserve.png"
     },
 
     {
@@ -400,7 +411,10 @@ const scheduleData = {
 
     {
       time: "21:00 -",
-      title: "돈키호테"
+      title: "드럭스토어 & 돈키호테",
+      mapUrl: "https://maps.app.goo.gl/oDH2cuGY1FCjys9w9",
+      image:"images/SCR-20260107-uedm.jpeg",
+      note: "• 드러그스토어 아카카베 마감시간: 23시 30분"
     }
   ]
 },
@@ -409,7 +423,6 @@ const scheduleData = {
   ]
 };
 
-// TODO: 네 일정 넣고 싶으면 items에 push하면 됨
 function renderSchedule() {
   const root = $("#viewSchedule");
 
