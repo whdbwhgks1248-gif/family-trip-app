@@ -347,14 +347,15 @@ const scheduleData = {
     {
       time: "12:30 - 13:00",
       title: "발권 및 플랫폼으로 이동",
-      note: "•예상 교통비: ¥820"
+      note: "• 예상 교통비: ¥820"
     },
 
     {
       time: "13:00 - 14:00",
       title: "> 오사카 숙소",
       mapUrl: "https://maps.app.goo.gl/bz95UscBXsHiY78V8",
-      image: "images/kokohotel.png"
+      image: "images/kokohotel.png",
+      note: "• 숙박세: ¥200"
     },
 
     {
@@ -394,7 +395,8 @@ const scheduleData = {
     {
       time: "18:40 - 19:00",
       title: "🚕 모미지",
-      mapUrl: "https://maps.app.goo.gl/2wtQYR4rCDCtaJ3B9"
+      mapUrl: "https://maps.app.goo.gl/2wtQYR4rCDCtaJ3B9",
+      note: "예상 택시비: 6,000원"
     },
 
     {
