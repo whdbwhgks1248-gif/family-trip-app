@@ -359,7 +359,7 @@ const scheduleData = {
 
     {
       time: "14:00 - 15:00",
-      title: "스시 사카바 사시스 난바",
+      title: "스시 사카바 사시스",
       mapUrl: "https://maps.app.goo.gl/rXZAwUV6HSBmrd9z8",
       image: "images/SCR-20260107-tyyx.jpeg"
     },
