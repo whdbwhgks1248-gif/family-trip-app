@@ -94,12 +94,12 @@ const scheduleData = {
           time: "21:15 - 22:30",
           title: "→ 카몬 호텔 난바",
           note: "• <a href='https://blog.naver.com/bbh4313/224127071321' target='_blank'>ATM 위치</a>\n• 라피트 막차 시간 : 22시 55분",
-          mapUrl: ""
+          mapUrl: "https://maps.app.goo.gl/SuSzkceFCajWgMCU9"
         },
         {
           time: "22:30",
           title: "호텔 도착",
-          mapUrl: "https://maps.google.com/?q=...",
+          mapUrl: "",
           image: "./images/kamon-hotel-namba.png",
           note: "• 숙박세 인당 ¥200\n01- 영수, 연실, 한나, 유나\n02- 아라, 현아, 건"
         }
@@ -116,7 +116,7 @@ const scheduleData = {
     {
       time: "08:00 - 09:30",
       title: "난바역 → 교토역",
-      mapUrl: "https://www.jorudan.co.jp/time/to/%E4%BA%AC%E9%83%BD_%E5%A4%A7%E9%98%AA/?Dym=202602&Ddd=18&r=%EF%BC%AA%EF%BC%B2%E4%BA%AC%E9%83%BD%E7%B7%9A",
+      mapUrl: "https://maps.app.goo.gl/gs3ecQuG4mdBi7oq5",
       note: "• 신쾌속 08:56편 출발\n• JR 신쾌속 소요시간 : 약 30분\n• 교통비 : ¥820\n• <a href=\"https://www.jorudan.co.jp/time/to/%E4%BA%AC%E9%83%BD_%E5%A4%A7%E9%98%AA/?Dym=202602&Ddd=18&r=%EF%BC%AA%EF%BC%B2%E4%BA%AC%E9%83%BD%E7%B7%9A\" target=\"_blank\">신쾌속 시간표</a>"
     },
     {
@@ -295,28 +295,31 @@ const scheduleData = {
     {
   label: "Day 4",
   items: [
-    { time: "09:10", title: "기상 & 준비" },
+    { time: "08:40",
+     title: "기상 & 준비" },
 
     {
       time: "08:40 - 09:00",
-      title: "교토역 체크아웃 및 짐 맡기기"
+      title: "체크아웃 및 짐 맡기기",
+      note: "• 유나, 현아,건 담당"
     },
 
     {
       time: "09:00 - 09:15",
-      title: "🚶 > Aoitori"
-      // mapUrl: "여기에 지도 링크 넣으면 지도 아이콘 뜸"
+      title: "🚶 > Aoitori",
+      mapUrl: "https://maps.app.goo.gl/NEQNzji7VXbuqRbr6"
     },
 
     {
       time: "09:15 - 10:15",
-      title: "Aoitori"
-      // mapUrl: "여기에 지도 링크 넣으면 지도 아이콘 뜸"
+      title: "Aoitori",
+      image: ""
     },
 
     {
       time: "10:15 - 10:45",
-      title: "🚇 > 후시미 이나리 신사"
+      title: "🚇 > 후시미 이나리 신사",
+      mapUrl: "https://maps.app.goo.gl/HNYpFVtRGoeUhbm36"
     },
 
     {
@@ -328,14 +331,14 @@ const scheduleData = {
         "• 토리이(일주문)를 세우면 사업이 번창한다는 의미로 개인/기업 후원으로 수가 늘어남\n" +
         "• 빛의 토리이는 초입만 봐도 OK\n\n" +
         "【근처 들를 곳】\n" +
-        "1) 치이카와 잡화점\n" +
-        "2) Inari Futaba (콩떡)\n" +
-        "3) 호교쿠도 (여우 전병)"
+        "①  치이카와 잡화점\n" +
+        "② Inari Futaba (콩떡)\n" +
+        "③ 호교쿠도 (여우 전병)"
     },
 
     {
       time: "12:00 - 12:30",
-      title: "숙소로 이동 & 짐찾기"
+      title: "짐찾기"
     },
 
     {
@@ -345,33 +348,36 @@ const scheduleData = {
 
     {
       time: "13:00 - 14:00",
-      title: "교토역 > 오사카 숙소"
+      title: "> 오사카 숙소"
     },
 
     {
       time: "14:00 - 15:00",
-      title: "스시 사카바 사시스 난바"
-      // mapUrl: "여기에 지도 링크 넣으면 지도 아이콘 뜸"
+      title: "스시 사카바 사시스 난바",
+      mapUrl: "https://maps.app.goo.gl/rXZAwUV6HSBmrd9z8"
     },
 
     {
       time: "15:00 - 17:00",
-      title: "구로몬 시장, 센니치마에 도구야스지 상점가, 도톤보리"
+      title: "근처 구경",
+      note: "① 구로몬 시장\n" +
+            "② 센니치마에 도구야스지 상점가\n" +
+            "③ 도톤보리\n"
     },
 
     {
       time: "17:00 - 18:40",
       title: "신사이바시스지 상점가",
       note:
-        "1) GIGO Osaka Dotonbori Main\n" +
-        "2) 러쉬 신사이바시점\n" +
-        "3) 아디다스 브랜드 코어 스토어 오사카\n" +
-        "4) GU 신사이바시\n" +
-        "5) SHIRO 다이마루 신사이바시점\n" +
-        "6) Nike Shinsaibashi\n" +
-        "7) 다이마루 신사이바시\n" +
-        "8) 파르코 신사이바시\n" +
-        "9) 아식스 오사카 신사이바시점"
+        "① GIGO Osaka Dotonbori Main\n" +
+        "② 러쉬 신사이바시점\n" +
+        "③ 아디다스 브랜드 코어 스토어 오사카\n" +
+        "④ GU 신사이바시\n" +
+        "⑤ SHIRO 다이마루 신사이바시점\n" +
+        "⑥ Nike Shinsaibashi\n" +
+        "⑦ 다이마루 신사이바시\n" +
+        "⑧ 파르코 신사이바시\n" +
+        "⑨ 아식스 오사카 신사이바시점"
     },
 
     {
